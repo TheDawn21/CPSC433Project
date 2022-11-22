@@ -1,11 +1,22 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Schedule {
-    // Hash map 1 will map Slot (key) -> Games & Practices (Values)
+    public ArrayList<Event> gamesLeft;
+    public ArrayList<Event> pracsLeft;
+    // give slot => output events
+    public HashMap<Slot, ArrayList<Event>> eventsMap;
+    // give element => output slot
+    public HashMap<Event, Slot> slotsMap;
+    public int score;
 
-    // Hash map 2 will map Games & Practices (Values) -> Slot (key)
+    public Schedule(ArrayList<Event> gamesLeft, ArrayList<Event> pracsLeft, HashMap<Slot, ArrayList<Event>> eventsMap, HashMap<Event, Slot> slotsMap, int score) {
+        this.gamesLeft = gamesLeft;
+        this.pracsLeft = pracsLeft;
+        this.eventsMap = eventsMap;
+        this.slotsMap = slotsMap;
 
-    // ArrayList of Games Left
-
-    // ArrayList of PRactices Left
+        // TODO: replace with eval
+        this.score = score;
+    }
 }

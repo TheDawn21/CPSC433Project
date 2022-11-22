@@ -1,16 +1,19 @@
 public class Slot {
-    
-    // String day
+    public String day;
+    public int startTime;
+    public int endTime;
+    public int max;
+    public int min;
+    public boolean type;
+    public boolean isSpecial;
 
-    // Int startTime
-
-    // Int min
-
-    // Int max
-
-    // Boolean isGameOrPrac
-        // 0 is Game 1 is Prac
-
-    // Boolean isSpecial
-
+    public Slot (String day, int startTime, int endTime, int max, int min, boolean type, boolean isSpecial) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.max = max;
+        this.min = min;
+        this.type = type;
+        this.isSpecial = isSpecial;
+    }
 }
