@@ -65,11 +65,11 @@ public class Parser {
     public void fillList(String buff) {
         String[] lines = buff.split("\n");
         if(lines.length <= 1) return;
-        // Switch based on the section head in the file
-        switch(lines[0]){
-            case "Name":
+        // Switch based on the section head in the file, lowercase only
+        switch(lines[0].toLowerCase()){
+            case "name":
                 exampleName = lines[1];
-            case "Game slots":
+            case "game slots":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and split them based on days
                     String[] slotInfo = lines[i].split(",");
@@ -93,7 +93,9 @@ public class Parser {
                         Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0]);
                         Integer startMins = Integer.parseInt((slotInfo[1].split(":"))[1]);
                         boolean special = false;
+                        // Account for a special game slot, the only special game slot
                         if(startHour == 11) special = true;
+                        // MAke the end time for which the minutes will flip and hour will be 1 or 2 hours ahead
                         if(startMins==30){
                             startHour += 2;
                             endTime = (startHour).toString() +":00";
@@ -107,6 +109,14 @@ public class Parser {
                         m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
+            case "practice slots":
+            case "games":
+            case "practices":
+            case "not compatible":
+            case "unwanted":
+            case "preferences":
+            case "pair":
+            case "partial assignments":
         }
 
 
