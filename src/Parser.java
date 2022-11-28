@@ -118,7 +118,7 @@ public class Parser {
             case "practice slots":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
-                    // Read each line and split them based on days
+                    // Read each line and separate them based on days
                     String[] slotInfo = lines[i].split(",");
                     // This should trim all whitespace around the line coming from spaces after commas
                     for(int j = 0; i < slotInfo.length; i++) {
@@ -165,7 +165,60 @@ public class Parser {
                     }
                 }
             case "games":
+                // Starts at 1 to skip header
+                for(int i = 1; i < lines.length; i++) {
+                    // Read each line and assign them into the games list
+                    String[] slotInfo = lines[i].split(" ");
+                    // Dealing with the age group and tier
+                    String ageAndTier = slotInfo[1];
+                    String age;
+                    String tier;
+                    if(ageAndTier.charAt(0) == 'O') {
+                        age = "O18";
+                        tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
+                    }
+                    else {
+                        // Assume age group always has 2 numbers after the U, so 3 letters in
+                        age = ageAndTier.substring(0, 3);
+                        tier = ageAndTier.substring(3); // Can contain special S charcter
+                    }
+                    // Dealing with division
+                    int divFinal = Integer.parseInt(slotInfo[2]); // Should always be here
+                    // Dealing with the type of event
+                    boolean pracOrGame = true; // game by default
+                    // Add the final game
+                    games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
+                }
             case "practices":
+                for(int i = 1; i < lines.length; i++) {
+                    // Read each line and assign them into the games list
+                    String[] slotInfo = lines[i].split(" ");
+                    // Dealing with the age group and tier
+                    String ageAndTier = slotInfo[1];
+                    String age;
+                    String tier;
+                    if(ageAndTier.charAt(0) == 'O') {
+                        age = "O18";
+                        tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
+                    }
+                    else {
+                        // Assume age group always has 2 numbers after the U, so 3 letters in
+                        age = ageAndTier.substring(0, 3);
+                        tier = ageAndTier.substring(3); // Can contain special S charcter
+                    }
+                    // Dealing with division, for practices div can be in different positions
+                    String div = "";
+                    for(int j = 0; i < slotInfo.length; i++) {
+                        if (slotInfo[j] == "DIV") {
+                            div = slotInfo[j+1]; // Should be safe, always next entry
+                        }
+                    }
+                    int divFinal = Integer.parseInt(div);
+                    // Dealing with the type of event
+                    boolean pracOrGame = false; // prac is false
+                    // Add the final practice
+                    practices.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
+                }
             case "not compatible":
             case "unwanted":
             case "preferences":
