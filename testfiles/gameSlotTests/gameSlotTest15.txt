@@ -1,6 +1,6 @@
 /all of the game slots
 Name:
-test14
+test15
 
 Game slots:
 MO, 8:00, 6, 0
