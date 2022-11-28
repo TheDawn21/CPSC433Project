@@ -87,7 +87,8 @@ public class Parser {
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, false));
+                        boolean special = false; 
+                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0] == "TU") {
@@ -111,7 +112,7 @@ public class Parser {
                         }
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "practice slots":
@@ -132,31 +133,35 @@ public class Parser {
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, false));
+                        boolean special = false; 
+                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0] == "TU") {
                         // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
                         String day = slotInfo[0];
                         String startTime = slotInfo[1];
-                        String endTime;
-                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0]);
-                        Integer startMins = Integer.parseInt((slotInfo[1].split(":"))[1]);
-                        boolean special = false;
-                        // Account for a special game slot, the only special game slot
-                        if(startHour == 11) special = true;
-                        // MAke the end time for which the minutes will flip and hour will be 1 or 2 hours ahead
-                        if(startMins==30){
-                            startHour += 2;
-                            endTime = (startHour).toString() +":00";
-                        }
-                        else{
-                            startHour+=1;
-                            endTime = (startHour).toString() +":30";
-                        }
+                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+1;
+                        String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
+                        boolean special = false; 
+                        // Account for a special practice slot, the only special practice slot
+                        if(startHour == 18) special = true;
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                    }
+                    // Friday specific slots
+                    else if(slotInfo[0] == "FR") {
+                        // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
+                        String day = slotInfo[0];
+                        String startTime = slotInfo[1];
+                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+2; // Add 2 this time for Friday
+                        String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
+                        // Special must be false on fridays
+                        boolean special = false; 
+                        int gameMax = Integer.parseInt(slotInfo[2]); 
+                        int gameMin = Integer.parseInt(slotInfo[3]); 
+                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "games":
