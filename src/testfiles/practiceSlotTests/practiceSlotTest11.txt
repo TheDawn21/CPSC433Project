@@ -1,6 +1,6 @@
-//missing practice slots
+//double for pracmin
 Name:
-test16
+test26
 
 Game slots:
 MO, 8:00, 6, 0
@@ -27,6 +27,7 @@ TU, 18:30, 7, 1
 TU, 18:00, 7, 1
 
 Practice slots: 
+MO, 8:00, 2, 1.5
 
 Games: 
 CSMA U13T3 DIV 01 

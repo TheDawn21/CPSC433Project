@@ -1,6 +1,6 @@
-//missing practice slots
+//tuesday start time that is not part of the predtermined schedule
 Name:
-test16
+test22
 
 Game slots:
 MO, 8:00, 6, 0
@@ -27,6 +27,7 @@ TU, 18:30, 7, 1
 TU, 18:00, 7, 1
 
 Practice slots: 
+TU, 9:30, 5, 1
 
 Games: 
 CSMA U13T3 DIV 01 
