@@ -1,6 +1,6 @@
-//missing practice slots
+//~50% of practice slots
 Name:
-test16
+test28
 
 Game slots:
 MO, 8:00, 6, 0
@@ -27,6 +27,23 @@ TU, 18:30, 7, 1
 TU, 18:00, 7, 1
 
 Practice slots: 
+MO, 10:00, 6, 2
+MO, 13:00, 8, 1
+MO, 14:00, 3, 0
+MO, 15:00, 6, 4
+MO, 17:00, 3, 1
+MO, 18:00, 1, 0
+MO, 20:00, 3, 2
+TU, 8:00, 5, 2
+TU, 9:00, 3, 1
+TU, 10:00, 8, 0
+TU, 14:00, 5, 2
+TU, 15:00, 3, 1
+TU, 16:00, 4, 2
+TU, 17:00, 3, 2
+TU, 18:00, 7, 6
+TU, 20:00, 6, 2
+
 
 Games: 
 CSMA U13T3 DIV 01 

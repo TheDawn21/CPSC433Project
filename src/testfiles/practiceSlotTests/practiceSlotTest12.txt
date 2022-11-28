@@ -1,6 +1,6 @@
-//missing practice slots
+//malformed practice slot as the second slot
 Name:
-test16
+test27
 
 Game slots:
 MO, 8:00, 6, 0
@@ -27,6 +27,8 @@ TU, 18:30, 7, 1
 TU, 18:00, 7, 1
 
 Practice slots: 
+MO, 8:00, 3, 2
+MO, 9:00, a, 8.2
 
 Games: 
 CSMA U13T3 DIV 01 
