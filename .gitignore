@@ -3,3 +3,4 @@ CPSC433Project/.vscode/settings.json
 .gitignore
 CPSC433Project.iml
 .idea
+/out/

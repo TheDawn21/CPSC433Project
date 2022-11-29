@@ -85,7 +85,7 @@ public class Eval {
     // s: Slot in sched that e is assigned to
     //
     // Return: sum of all soft constraint penalties
-    public static int getPen(Schedule sched, Event e, Slot s) {
+    public int getPen(Schedule sched, Event e, Slot s) {
         /* INCOMPLETE */
 
         return 0;
@@ -132,25 +132,25 @@ public class Eval {
         ArrayList<Slot> overlappingPractices = new ArrayList<Slot>();
 
         for (int i = 0; i < slotList.size(); i++) {
-            Slot practiceSlot = slotList.get(i);
-            if ((gameSlot.day.equals("Monday")
-                    && (practiceSlot.day.equals("Monday")
-                            || practiceSlot.day.equals("Friday")))
-                 || (gameSlot.day.equals("Tuesday")
-                    && practiceSlot.day.equals("Tuesday")))
-            {
-                if (gameSlot.startTime == practiceSlot.startTime) {
-                    overlappingPractices.add(practiceSlot);
-                } else if (gameSlot.endTime == practiceSlot.endTime) {
-                    overlappingPractices.add(practiceSlot);
-                } else if (gameSlot.endTime > practiceSlot.endTime) {
-                    if (gameSlot.startTime < practiceSlot.endTime) 
-                        overlappingPractices.add(practiceSlot);
-                } else if (gameSlot.startTime < practiceSlot.endTime) {
-                    if (gameSlot.endTime > practiceSlot.startTime)
-                        overlappingPractices.add(practiceSlot);
-                }
-            }
+//            Slot practiceSlot = slotList.get(i);
+//            if ((gameSlot.day.equals("Monday")
+//                    && (practiceSlot.day.equals("Monday")
+//                            || practiceSlot.day.equals("Friday")))
+//                 || (gameSlot.day.equals("Tuesday")
+//                    && practiceSlot.day.equals("Tuesday")))
+//            {
+//                if (gameSlot.startTime == practiceSlot.startTime) {
+//                    overlappingPractices.add(practiceSlot);
+//                } else if (gameSlot.endTime == practiceSlot.endTime) {
+//                    overlappingPractices.add(practiceSlot);
+//                } else if (gameSlot.endTime > practiceSlot.endTime) {
+//                    if (gameSlot.startTime < practiceSlot.endTime)
+//                        overlappingPractices.add(practiceSlot);
+//                } else if (gameSlot.startTime < practiceSlot.endTime) {
+//                    if (gameSlot.endTime > practiceSlot.startTime)
+//                        overlappingPractices.add(practiceSlot);
+//                }
+//            }
         }
 
         return overlappingPractices;
