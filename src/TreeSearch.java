@@ -7,8 +7,10 @@ import java.util.Stack;
 public class TreeSearch {
     Parser input;
     Schedule bestSched;
-//    Eval eval;
+    // Eval eval;
     Stack<Schedule> stack;
+    ArrayList<Slot> gSlots;
+    ArrayList<Slot> pSlots;
     String path = "";
 
 
@@ -16,7 +18,16 @@ public class TreeSearch {
         this.input = input;
 
         // Initialize eval
-//        this.eval = new Eval(input);
+        // this.eval = new Eval(input);
+
+        // Group slot
+        gSlots = new ArrayList<>();
+        gSlots.addAll(input.m_game_slots);
+        // gSlots.addAll(input.t_game_slots);
+        // pSlots = new ArrayList<>();
+        // pSlots.addAll(input.m_prac_slots);
+        // pSlots.addAll(input.t_prac_slots);
+        // pSlots.addAll(input.f_prac_slots);
 
         // Initialize root node
         ArrayList<Event> gameLeft = input.games;
@@ -34,9 +45,16 @@ public class TreeSearch {
         specialAssign(sched);
         partAssign(sched);
 
-//        for (game : sched.gamesLeft) {
-//
-//        }
+        // stack.add(sched);
+        // while (stack.size() != 0) {
+        //     sched = stack.pop();
+        //     sched.gamesLeft.get(0);
+        //     for (Slot gSlot : gSlots) {
+                
+        //         sched = new Schedule(sched);
+        //     }
+        // }
+        
 
         for (Slot slot: sched.eventsMap.keySet()) {
             String key = slot.day;
@@ -53,17 +71,16 @@ public class TreeSearch {
     }
     
     public void partAssign(Schedule sched) {
-        ArrayList<PartAssign> partAssignList = input.paList;
-        partAssignList.forEach(element ->  {
-            assign(sched, element.event, element.slot);
+        input.paMap.forEach((event, slot) ->  {
+            assign(sched, event, slot);
         });
     }
 
     public void assign(Schedule sched, Event event, Slot slot) {
-//        if (eval.isValid(sched, event, slot)) {
+        // if (eval.isValid(sched, event, slot)) {
         if (true) {
             // calc score
-//            sched.score = eval.getPen(sched, event, slot);
+            // sched.score = eval.getPen(sched, event, slot);
 
             // update eventsMap
             ArrayList<Event> temp = (sched.eventsMap.get(slot) != null) ? sched.eventsMap.get(slot) : new ArrayList<>();
@@ -92,16 +109,18 @@ public class TreeSearch {
         Event game3 = new Event("game3", null, null, null, 0, true);
         Slot slot1 = new Slot("slot1", null, null, 0, 0, false);
         Slot slot2 = new Slot("slot2", null, null, 0, 0, false);
+        ArrayList<Slot> slots = new ArrayList<>(Arrays.asList(slot1,slot2));
         ArrayList<Event> games = new ArrayList<>(Arrays.asList(game1, game2, game3));
 
-        ArrayList<PartAssign> testPartAssignList = new ArrayList<>();
-        testPartAssignList.add(new PartAssign(game1, slot1));
-        testPartAssignList.add(new PartAssign(game2, slot1));
-        testPartAssignList.add(new PartAssign(game3, slot2));
+        HashMap<Event, Slot> testPaMap = new HashMap<>();
+        testPaMap.put(game1, slot1);
+        testPaMap.put(game2, slot1);
+        testPaMap.put(game3, slot2);
     
         Parser input = new Parser("README.md");
-        input.paList = testPartAssignList;
+        input.paMap = testPaMap;
         input.games = games;
+        input.m_game_slots = slots;
         TreeSearch testSearch = new TreeSearch(input);
     }
 }

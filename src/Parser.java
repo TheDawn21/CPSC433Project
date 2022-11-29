@@ -22,7 +22,7 @@ public class Parser {
     HashMap<Event, ArrayList<Slot>> unwantMap;
     HashMap<Event, ArrayList<Object[]>> preferMap;
     HashMap<Event, ArrayList<Event>> pairMap;
-    HashMap<Event, ArrayList<Event>> paMap;
+    HashMap<Event, Slot> paMap;
 
     public Parser(String inFilename) {
         openFile(inFilename);
