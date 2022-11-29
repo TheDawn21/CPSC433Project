@@ -34,9 +34,9 @@ public class TreeSearch {
         specialAssign(sched);
         partAssign(sched);
 
-        for (game : sched.gamesLeft) {
-            
-        }
+//        for (game : sched.gamesLeft) {
+//
+//        }
 
         for (Slot slot: sched.eventsMap.keySet()) {
             String key = slot.day;
