@@ -1,6 +1,6 @@
-//prac missing org id
+//no prac (should not throw an error)
 Name:
-test39
+test46
 
 Game slots:
 MO, 8:00, 6, 0
@@ -28,11 +28,7 @@ CSMA U13T3 DIV 02
 CUSA O18 DIV 01 
 CSMA U17T1 DIV 01 
 
-Practices: 
-U13T3 DIV 01 PRC 01 
-CSMA U13T3 DIV 02 OPN 02 
-CUSA O18 DIV 01 PRC 01 
-CSMA U17T1 PRC 01 
+Practices:  
 
 Not compatible: 
 CSMA U13T3 DIV 01 PRC 01, CSMA U13T3 DIV 02 OPN 02 

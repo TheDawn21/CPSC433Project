@@ -1,6 +1,6 @@
-//prac missing org id
+//prac missing div tag
 Name:
-test39
+test42
 
 Game slots:
 MO, 8:00, 6, 0
@@ -23,13 +23,13 @@ TU, 10:00,2,1
 FR, 10:00, 2, 1 
 
 Games: 
-CSMA U13T3 DIV 01 
+CSMA U13T3 01 
 CSMA U13T3 DIV 02 
 CUSA O18 DIV 01 
 CSMA U17T1 DIV 01 
 
 Practices: 
-U13T3 DIV 01 PRC 01 
+CSMA U13T3 DIV 01 PRC 01 
 CSMA U13T3 DIV 02 OPN 02 
 CUSA O18 DIV 01 PRC 01 
 CSMA U17T1 PRC 01 
