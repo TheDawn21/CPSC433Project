@@ -20,10 +20,10 @@ public class Schedule {
 
     // copy constructor
     public Schedule (Schedule sched) {
-        this.gamesLeft = sched.gamesLeft;
-        this.pracsLeft = sched.pracsLeft;
-        this.eventsMap = sched.eventsMap;
-        this.slotsMap = sched.slotsMap;
+        this.gamesLeft = new ArrayList<>(sched.gamesLeft);
+        this.pracsLeft = new ArrayList<>(sched.pracsLeft);
+        this.eventsMap = new HashMap<>(sched.eventsMap);
+        this.slotsMap = new HashMap<>(sched.slotsMap);
         this.score = sched.score;
     }
 }
