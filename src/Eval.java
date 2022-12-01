@@ -29,7 +29,15 @@ public class Eval {
     // Constructor
     public Eval(Parser input, int[] commandLineInputs) {
         this.input = input;
-        this.weights_penalties = commandLineInputs;
+        this.wminfilled = commandLineInputs[0];
+        this.wpref = commandLineInputs[1];
+        this.wpair = commandLineInputs[2];
+        this.wsecdiff = commandLineInputs[3];
+        this.pengamemin = commandLineInputs[4];
+        this.penpracticemin = commandLineInputs[5];
+        this.pennotpaired = commandLineInputs[6];
+        this.pensection = commandLineInputs[7];
+
         overlap = new HashMap<Slot, ArrayList<Slot>>();
 
         // Find game-practice overlaps
