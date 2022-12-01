@@ -12,7 +12,18 @@ public class Eval {
     public HashMap<Slot, ArrayList<Slot>> overlap;
 
     // index 0-3 = weights, 4-7 = penalties
-    public int[] weights_penalties;
+    public int wminfilled;
+    public int wpref;
+    public int wpair;
+    public int wsecdiff;
+    public int pengamemin;
+    public int penpracticemin;
+    public int pennotpaired;
+    public int pensection;
+
+
+    public ArrayList<Slot> sortedDecrGameMin;
+    
 
 
     // Constructor
@@ -93,12 +104,23 @@ public class Eval {
         /* INCOMPLETE */
         
         // calculate gamemin or practicemin (modified)
+        int index = sched.index;
+        int penalties = 0;
+
         if (e.type == true) {
             int numGamesLeft = sched.gamesLeft.size() - 1;
+
+            int numEventsInSlot = sched.eventsMap.get(s).size();
+            if (numEventsInSlot + 1 >= s.min) {
+
+            }
             
         } else {
 
         }
+
+        // pair
+        eval += calcPair(sched, e, s);
 
         return 0;
     }
@@ -321,7 +343,7 @@ public class Eval {
 
 
     // Returns true if there are 2 games in age level U15/U16/U17/U18/U19 that overlap
-    public boolean ageOverlap(Sched sched, Event e, Slot s) {
+    public boolean ageOverlap(Schedule sched, Event e, Slot s) {
         boolean invalid = false;
 
         if (inAgeRange(e)) {
@@ -371,5 +393,11 @@ public class Eval {
 
         return invalid;
     }
+
+
+    // Returns additional pair penalty
+    //public int calcPair(Schedule sched, Event e, Slot s) {
+
+    //}
 
 }
