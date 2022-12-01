@@ -1,5 +1,5 @@
 public class Slot {
-    public String day; // Start day: "MO", "TU", or "FR"
+    public String day; // Start day: "Monday", "Tuesday", or "Friday"
     public int startTime;
     public int endTime;
     public int max;
