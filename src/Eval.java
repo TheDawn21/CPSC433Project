@@ -91,6 +91,14 @@ public class Eval {
     // Return: sum of all soft constraint penalties (modified gamemin, practicemin functions)
     public static int getPen(Schedule sched, Event e, Slot s) {
         /* INCOMPLETE */
+        
+        // calculate gamemin or practicemin (modified)
+        if (e.type == true) {
+            int numGamesLeft = sched.gamesLeft.size() - 1;
+            
+        } else {
+
+        }
 
         return 0;
     }
@@ -189,6 +197,7 @@ public class Eval {
                 }
             }
         }
+        
 
         return overlappingPractices;
     }
@@ -295,11 +304,13 @@ public class Eval {
                             invalid = true;
                         } else if (s.endTime == 1900) {
                             invalid = true;
-                        } else if (s.startTime < 1900 && s.endTime > 1800) {
+                        }  
+                          else if (s.startTime < 1900 && s.endTime > 1800) {
                             invalid = true;
                         } else if (s.endTime > 1800 && s.startTime < 1900) {
                             invalid = true;
                         }
+                        
                     }
                 }
             }
@@ -350,11 +361,13 @@ public class Eval {
     public boolean gameTuesday11(Event e, Slot s) {
         boolean invalid = false;
 
+         
         if (e.type == true) {
             if (s.day.equals("TU") && s.startTime == 1100) {
                 invalid = true;
             }
         }
+        
 
         return invalid;
     }

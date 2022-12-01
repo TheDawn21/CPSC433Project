@@ -15,8 +15,15 @@ public class Schedule {
         this.pracsLeft = pracsLeft;
         this.eventsMap = eventsMap;
         this.slotsMap = slotsMap;
-
-        // TODO: replace with eval
         this.score = score;
+    }
+
+    // copy constructor
+    public Schedule (Schedule sched) {
+        this.gamesLeft = sched.gamesLeft;
+        this.pracsLeft = sched.pracsLeft;
+        this.eventsMap = sched.eventsMap;
+        this.slotsMap = sched.slotsMap;
+        this.score = sched.score;
     }
 }
