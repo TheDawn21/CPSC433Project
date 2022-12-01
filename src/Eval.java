@@ -268,7 +268,7 @@ public class Eval {
         HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
         ArrayList<Event> otherEvents = assignment.get(s);
         
-        HashSet<Event> noncompatibleEvents = input.ncList.get(e);
+        HashSet<Event> noncompatibleEvents = input.ncMap.get(e);
         
         for (int i = 0; i < otherEvents.size(); i++) {
             Event other = otherEvents.get(i);
@@ -286,7 +286,7 @@ public class Eval {
     public boolean slotUnwanted(Event e, Slot s) {
         boolean invalid = false;
 
-        HashSet<Slot> unwantedSlots = input.unwants.get(e);
+        HashSet<Slot> unwantedSlots = input.unwantMap.get(e);
         if (unwantedSlots.contains(s))
             invalid = true;
         

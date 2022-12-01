@@ -138,9 +138,9 @@ public class TreeSearch {
         Event game3 = new Event("game3", null, null, null, 0, true);
         Event game4 = new Event("game4", null, null, null, 0, true);
         Event prac1 = new Event("prac1", null, null, null, 0, false);
-        Slot gSlot1 = new Slot("gSlot1", null, null, 0, 0, false);
-        Slot gSlot2 = new Slot("gSlot2", null, null, 0, 0, false);
-        Slot pSlot1 = new Slot("pSlot1", null, null, 0, 0, false);
+        Slot gSlot1 = new Slot("gSlot1", 0, 0, 0, 0, false);
+        Slot gSlot2 = new Slot("gSlot2", 0, 0, 0, 0, false);
+        Slot pSlot1 = new Slot("pSlot1", 0, 0, 0, 0, false);
         ArrayList<Slot> gSlots = new ArrayList<>(Arrays.asList(gSlot1,gSlot2));
         ArrayList<Slot> pSlots = new ArrayList<>(Arrays.asList(pSlot1));
         ArrayList<Event> games = new ArrayList<>(Arrays.asList(game1, game2, game3, game4));
