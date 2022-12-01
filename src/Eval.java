@@ -404,8 +404,23 @@ public class Eval {
 
 
     // Returns additional pair penalty
-    //public int calcPair(Schedule sched, Event e, Slot s) {
+    public int calcPair(Schedule sched, Event e, Slot s) {
+        int pairPen = 0;
+        ArrayList<Event> pairList = input.pairMap.get(e);
+        // For every event in pair list, check if event is assigned and two events are not in the same slot, then add pen, else 0
+        for (Event event : pairList) {
+            if (sched.slotsMap.containsKey(event) && sched.slotsMap.get(event) != s) {
+                pairPen += pennotpaired;
+            }
+        }
+        return pairPen;
+    }
 
-    //}
+    // Returns additional preferences penalty
+    // public int caclPref(Schedule sched, Event e, Slot s) {
+    //     if (input.preferMap.get(e) != s) {
 
+    //     }
+    //     return 0;
+    // }
 }
