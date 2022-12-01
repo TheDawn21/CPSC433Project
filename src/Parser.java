@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -18,8 +19,8 @@ public class Parser {
     ArrayList<Event> games;
     ArrayList<Event> practices;
     // Hashmaps
-    HashMap<Event, ArrayList<Event>> ncMap;// = new HashMap<Event, ArrayList<Event>>();
-    HashMap<Event, ArrayList<Slot>> unwantMap;
+    HashMap<Event, HashSet<Event>> ncMap;// = new HashMap<Event, ArrayList<Event>>();
+    HashMap<Event, HashSet<Slot>> unwantMap;
     HashMap<Event, ArrayList<Object[]>> preferMap;
     HashMap<Event, ArrayList<Event>> pairMap;
     HashMap<Event, Slot> paMap;
@@ -90,7 +91,7 @@ public class Parser {
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
                         boolean special = false; 
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+//                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
@@ -114,7 +115,7 @@ public class Parser {
                         }
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+//                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "practice slots":
@@ -136,7 +137,7 @@ public class Parser {
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
                         boolean special = false; 
-                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+//                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
@@ -150,7 +151,7 @@ public class Parser {
                         if(startHour == 18) special = true;
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+//                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Friday specific slots
                     else if(slotInfo[0].equals("FR")) {
@@ -163,7 +164,7 @@ public class Parser {
                         boolean special = false; 
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+//                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "games":
@@ -282,7 +283,7 @@ public class Parser {
                     if(ncMap.get(event1) == null) {
                         ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event2);
-                        ncMap.put(event1, mapVal);
+//                        ncMap.put(event1, mapVal);
                     }
                     else {
                         ncMap.get(event1).add(event2);
@@ -291,7 +292,7 @@ public class Parser {
                     if(ncMap.get(event2) == null) {
                         ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event1);
-                        ncMap.put(event2, mapVal);
+//                        ncMap.put(event2, mapVal);
                     }
                     else {
                         ncMap.get(event2).add(event1);

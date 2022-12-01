@@ -1,13 +1,13 @@
 public class Slot {
     public String day; // Start day: "MO", "TU", or "FR"
-    public String startTime;
-    public String endTime;
+    public int startTime;
+    public int endTime;
     public int max;
     public int min;
     //public boolean type; What this do?
     public boolean isSpecial;
 
-    public Slot (String day, String startTime, String endTime, int max, int min, boolean isSpecial) {
+    public Slot (String day, int startTime, int endTime, int max, int min, boolean isSpecial) {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
