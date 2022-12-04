@@ -23,6 +23,7 @@ public class Eval {
 
 
     public ArrayList<Slot> sortedDecrGameMin;
+    public ArrayList<Slot> sortedDecrPracMin;
     
 
 
@@ -103,34 +104,43 @@ public class Eval {
     // Calculates the new total penalty after assigning an event to an incomplete schedule
     //
     // Input:
-    // sched: valid incomplete Schedule (before adding e)
+    // sched: valid incomplete Schedule object (score field will be updated)
     // e: Event being assigned
     // s: Slot in sched that e is assigned to
     //
     // Return: sum of all soft constraint penalties (modified gamemin, practicemin functions)
-    public static int getPen(Schedule sched, Event e, Slot s) {
+    public int getPen(Schedule sched, Event e, Slot s) {
         /* INCOMPLETE */
-        
-        // calculate gamemin or practicemin (modified)
-        int index = sched.index;
-        int penalties = 0;
+        // Get old score and add any new penalties to it
+        int score = sched.score;
 
+        // calculate penalty for gamemin or practicemin (modified)
+        int oldMinPenalties = sched.minPenalties;
+        if (oldMinPenalties < 0)
+            oldMinPenalties = 0;
+        int newMinPenalties = getMinPenalties(sched, e, s);
+        if (newMinPenalties < 0)
+            newMinPenalties = 0;
         if (e.type == true) {
-            int numGamesLeft = sched.gamesLeft.size() - 1;
-
-            int numEventsInSlot = sched.eventsMap.get(s).size();
-            if (numEventsInSlot + 1 >= s.min) {
-
-            }
-            
+            // e is a game Event
+            score += (newMinPenalties - oldMinPenalties) * pengamemin * wminfilled;
         } else {
-
+            // e is a practice Event
+            score += (newMinPenalties - oldMinPenalties) * penpracticemin * wminfilled;
         }
 
-        // pair
-        eval += calcPair(sched, e, s);
 
-        return 0;
+        // calculate penalty for games with same division in a slot
+        score += calcSection(sched, e, s) * wsecdiff;
+
+
+        // pair
+        //eval += calcPair(sched, e, s);
+
+        
+        // Update score field in Schedule and return score
+        sched.score = score;
+        return score;
     }
     
 
@@ -400,6 +410,117 @@ public class Eval {
         
 
         return invalid;
+    }
+
+
+    // Returns the new number of gameMin + pracMin penalties after
+    // assigning Event e.
+    // Also updates the index and minPenalties field of the Schedule
+    public int getMinPenalties(Schedule sched, Event e, Slot s) {
+        int gIndex = sched.gameIndex;
+        int pIndex = sched.pracIndex;
+        int penalties = sched.minPenalties;
+
+        // Assign e and calculate new min penalty
+        if (e.type == true) { // assign game
+            // check if putting event in slot reduces the penalty
+            ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
+            int numAssigned = assignedEvents.size();
+            if (numAssigned < s.min) {
+                penalties -= 1;
+            }
+
+            int numGamesLeft = sched.gamesLeft.size() - 1;
+            Slot highestMinSlot;
+            if (gIndex < sortedDecrGameMin.size()) {
+                highestMinSlot = sortedDecrGameMin.get(gIndex);
+            } else {
+                highestMinSlot = sortedDecrGameMin.get(gIndex - 1);
+            }
+            
+
+            // Add a penalty for every previous slot in sorted list of slots,
+            // each of which has greater or equal min requirement.
+            if (gIndex > 0) {
+                penalties += gIndex;
+            }
+
+            // Search for the next slot in list that has min <= # games left.
+            // Add up penalties for all slots encountered along the way.
+            while (numGamesLeft < highestMinSlot.min && gIndex < sortedDecrGameMin.size()) {
+                int diff = highestMinSlot.min - numGamesLeft;
+                penalties += diff;
+
+                gIndex += 1;
+                // Once the gamesleft goes under the min value of the slot with lowest
+                // gameMin, gameIndex will go over array index
+                sched.gameIndex = gIndex;
+                if (gIndex < sortedDecrGameMin.size())
+                    highestMinSlot = sortedDecrGameMin.get(gIndex);
+            }
+
+            // Update penalty counter for schedule
+            sched.minPenalties = penalties;
+            
+        } else { // assign practice
+            // check if putting event in slot reduces the penalty
+            ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
+            int numAssigned = assignedEvents.size();
+            if (numAssigned < s.min) {
+                penalties -= 1;
+            }
+
+            int numPracsLeft = sched.pracsLeft.size() - 1;
+            Slot highestMinSlot;
+            if (pIndex < sortedDecrPracMin.size()) {
+                highestMinSlot = sortedDecrPracMin.get(pIndex);
+            } else {
+                highestMinSlot = sortedDecrPracMin.get(pIndex - 1);
+            }
+            
+
+            // Add a penalty for every previous slot in sorted list of slots,
+            // each of which has greater or equal min requirement.
+            if (pIndex > 0) {
+                penalties += pIndex;
+            }
+
+            // Search for the next slot in list that has min <= # games left.
+            // Add up penalties for all slots encountered along the way.
+            while (numPracsLeft < highestMinSlot.min && pIndex < sortedDecrPracMin.size()) {
+                int diff = highestMinSlot.min - numPracsLeft;
+                penalties += diff;
+
+                pIndex += 1;
+                // Once the gamesleft goes under the min value of the slot with lowest
+                // gameMin, gameIndex will go over array index
+                sched.pracIndex = pIndex;
+                if (pIndex < sortedDecrPracMin.size())
+                    highestMinSlot = sortedDecrPracMin.get(pIndex);
+            }
+
+            // Update penalty counter for schedule
+            sched.minPenalties = penalties;
+        }
+
+        return penalties;
+    }
+
+
+    // Returns the additional Eval score to be added based on the
+    // "different divisional games should be in different times"
+    // soft constraint.
+    public int calcSection(Schedule sched, Event e, Slot s) {
+        int sectionPenalties = 0;
+
+        ArrayList<Event> assignedGames = sched.eventsMap.get(s);
+        for (int i = 0; i < assignedGames.size(); i ++) {
+            Event otherGame = assignedGames.get(i);
+            if (otherGame.age.equals(e.age) && otherGame.tier.equals(e.tier))
+                sectionPenalties += 1;
+        }
+
+        return sectionPenalties * pensection;
     }
 
 
