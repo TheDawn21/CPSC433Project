@@ -326,7 +326,7 @@ public class Parser {
                     boolean isPractice = false;
                     String eventName = slotInfo[0].trim(); 
                     String slotDay = slotInfo[1].trim();
-                    int slotTime = Integer.parseInt((slotInfo[1].trim()).replace(":", ""));
+                    int slotTime = Integer.parseInt((slotInfo[2].trim()).replace(":", ""));
                     Event event = null;
                     Slot slot = null;
                     // Handle the event
@@ -406,7 +406,7 @@ public class Parser {
                         continue;
                         //System.exit(0); Not exit behaviour for now
                     }
-                    // Add hashmap entry for event 1 -> event 2
+                    // Add hashmap entry for event -> Slot
                     if(unwantMap.get(event) == null) {
                         HashSet<Slot> mapVal = new HashSet<Slot>();
                         mapVal.add(slot);
@@ -417,7 +417,114 @@ public class Parser {
                     }
                 }
             case "preferences":
-                
+                // Form = HashMap<Event, ArrayList<Object[]>> preferMap;
+                // Object because there is a Slot and preference value
+                for(int i = 1; i < lines.length; i++) {
+                    String[] slotInfo = lines[i].split(",");
+                    if(slotInfo.length != 4) {
+                        System.out.println("Preference does not have 4 entries, skipping line");
+                        continue; // Make sure there are two events
+                    }
+                    boolean isPractice = false;
+                    String eventName = slotInfo[2].trim(); 
+                    String slotDay = slotInfo[0].trim();
+                    int slotTime = Integer.parseInt((slotInfo[1].trim()).replace(":", ""));
+                    int prefVal = Integer.parseInt((slotInfo[3].trim()));
+                    Event event = null;
+                    Slot slot = null;
+                    // Handle the Event
+                    String[] eventInfo = eventName.split(" ");
+                    for(int k = 0; k < eventInfo.length; k++) {
+                        if(eventInfo[k].equals("PRC") || eventInfo[k].equals("OPN")) {
+                            isPractice = true;
+                        }
+                    }
+                    // If the event is a practice then search practices
+                    if(isPractice) {
+                        for(int j = 0; j < practices.size(); j++) {
+                            if(practices.get(j).name.equals(eventName) ) {
+                                event = practices.get(j);
+                            }
+                        }
+                    }
+                    // If the event is a game then search games
+                    else {
+                        for(int j = 0; j < games.size(); j++) {
+                            if(games.get(j).name.equals(eventName) ) {
+                                event = games.get(j);
+                            }
+                        }
+                    }
+                    //Handle the Slot
+                    // If the event is a practice it must be in practice slots
+                    if(isPractice) {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_prac_slots.get(j).startTime == slotTime) {
+                                    slot = m_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        else if(slotDay.equals("TU")) {
+                            for(int j = 0; j < t_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_prac_slots.get(j).startTime == slotTime) {
+                                    slot = t_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Friday
+                        else {
+                            for(int j = 0; j < f_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(f_prac_slots.get(j).startTime == slotTime) {
+                                    slot = f_prac_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_game_slots.get(j).startTime == slotTime) {
+                                    slot = m_game_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Tuesday
+                        else {
+                            for(int j = 0; j < t_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_game_slots.get(j).startTime == slotTime) {
+                                    slot = t_game_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    // Check for if one of the entries does not exist
+                    if(event == null || slot == null) {
+                        System.out.println("Event or slot does not exist, skipping");
+                        continue;
+                        //System.exit(0); Not exit behaviour for now
+                    }
+                    // Add hashmap entry for event -> Object[2](slot,prefVal)
+                    if(preferMap.get(event) == null) {
+                        ArrayList<Object[]> mapVal = new ArrayList<Object[]>();
+                        Object[] slotAndPref = new Object[2];
+                        slotAndPref[0] = slot;
+                        slotAndPref[1] = prefVal;
+                        mapVal.add(slotAndPref);
+                        preferMap.put(event, mapVal);
+                    }
+                    else {
+                        Object[] slotAndPref = new Object[2];
+                        slotAndPref[0] = slot;
+                        slotAndPref[1] = prefVal;
+                        preferMap.get(event).add(slotAndPref);
+                    }
+                }
             case "pair":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
