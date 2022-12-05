@@ -13,9 +13,9 @@ import java.util.HashSet;
  * Create general method for slots
  * Create an event creation method
  * Create a method for each hashmap
- * Create method for testing if an event is a practice
- * Create method(s) for searching through the games/practices lists for a specific event
- * Create method(s) for searching through the slots lists for a specific slot
+ * //Create method for testing if an event is a practice// *DONE*
+ * //Create method(s) for searching through the games/practices lists for a specific event// *Done*
+ * //Create method(s) for searching through the slots lists for a specific slot// *Done*
  * ... probably more
  */
 
@@ -248,49 +248,11 @@ public class Parser {
                     String eventName2 = slotInfo[1].trim();
                     Event event1 = null;
                     Event event2 = null;
-                    // Handle the first event, find the reference in games or practices
-                    String[] eventInfo1 = eventName1.split(" ");
-                    for(int k = 0; k < eventInfo1.length; k++) {
-                        if(eventInfo1[k].equals("PRC") || eventInfo1[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName1) ) {
-                                event1 = practices.get(j);
-                            }
-                        }
-                    }
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName1) ) {
-                                event1 = games.get(j);
-                            }
-                        }
-                    }
-                    isPractice = false; // Make sure to reset this value
-                    // Handle the second event, find the reference in games or practices
-                    String[] eventInfo2 = eventName2.split(" ");
-                    for(int k = 0; k < eventInfo2.length; k++) {
-                        if(eventInfo2[k].equals("PRC") || eventInfo2[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName2) ) {
-                                event2 = practices.get(j);
-                            }
-                        }
-                    }
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName1) ) {
-                                event2 = games.get(j);
-                            }
-                        }
-                    }
+                    // Handle the events, find the reference in games or practices
+                    isPractice = isPractice(eventName1);
+                    event1 = getEvent(isPractice, eventName1);
+                    isPractice = isPractice(eventName2);
+                    event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
                         System.out.println("Event does not exist in possible Events, skipping");
@@ -332,76 +294,10 @@ public class Parser {
                     Event event = null;
                     Slot slot = null;
                     // Handle the event
-                    String[] eventInfo1 = eventName.split(" ");
-                    for(int k = 0; k < eventInfo1.length; k++) {
-                        if(eventInfo1[k].equals("PRC") || eventInfo1[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    // If the event is a practice then search practices
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName) ) {
-                                event = practices.get(j);
-                            }
-                        }
-                    }
-                    // If the event is a game then search games
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName) ) {
-                                event = games.get(j);
-                            }
-                        }
-                    }
+                    isPractice = isPractice(eventName);
+                    event = getEvent(isPractice, eventName);
                     //Handle the Slot
-                    // If the event is a practice it must be in practice slots
-                    if(isPractice) {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_prac_slots.get(j).startTime == slotTime) {
-                                    slot = m_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        else if(slotDay.equals("TU")) {
-                            for(int j = 0; j < t_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_prac_slots.get(j).startTime == slotTime) {
-                                    slot = t_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Friday
-                        else {
-                            for(int j = 0; j < f_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(f_prac_slots.get(j).startTime == slotTime) {
-                                    slot = f_prac_slots.get(j);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_game_slots.get(j).startTime == slotTime) {
-                                    slot = m_game_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Tuesday
-                        else {
-                            for(int j = 0; j < t_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_game_slots.get(j).startTime == slotTime) {
-                                    slot = t_game_slots.get(j);
-                                }
-                            }
-                        }
-                    }
+                    slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist in possible unwanted, skipping");
@@ -435,76 +331,10 @@ public class Parser {
                     Event event = null;
                     Slot slot = null;
                     // Handle the Event
-                    String[] eventInfo = eventName.split(" ");
-                    for(int k = 0; k < eventInfo.length; k++) {
-                        if(eventInfo[k].equals("PRC") || eventInfo[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    // If the event is a practice then search practices
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName) ) {
-                                event = practices.get(j);
-                            }
-                        }
-                    }
-                    // If the event is a game then search games
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName) ) {
-                                event = games.get(j);
-                            }
-                        }
-                    }
+                    isPractice = isPractice(eventName);
+                    event = getEvent(isPractice, eventName);
                     //Handle the Slot
-                    // If the event is a practice it must be in practice slots
-                    if(isPractice) {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_prac_slots.get(j).startTime == slotTime) {
-                                    slot = m_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        else if(slotDay.equals("TU")) {
-                            for(int j = 0; j < t_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_prac_slots.get(j).startTime == slotTime) {
-                                    slot = t_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Friday
-                        else {
-                            for(int j = 0; j < f_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(f_prac_slots.get(j).startTime == slotTime) {
-                                    slot = f_prac_slots.get(j);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_game_slots.get(j).startTime == slotTime) {
-                                    slot = m_game_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Tuesday
-                        else {
-                            for(int j = 0; j < t_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_game_slots.get(j).startTime == slotTime) {
-                                    slot = t_game_slots.get(j);
-                                }
-                            }
-                        }
-                    }
+                    slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the entries does not exist
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist, skipping");
@@ -540,49 +370,11 @@ public class Parser {
                     String eventName2 = slotInfo[1].trim();
                     Event event1 = null;
                     Event event2 = null;
-                    // Handle the first event, find the reference in games or practices
-                    String[] eventInfo1 = eventName1.split(" ");
-                    for(int k = 0; k < eventInfo1.length; k++) {
-                        if(eventInfo1[k].equals("PRC") || eventInfo1[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName1) ) {
-                                event1 = practices.get(j);
-                            }
-                        }
-                    }
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName1) ) {
-                                event1 = games.get(j);
-                            }
-                        }
-                    }
-                    isPractice = false; // Make sure to reset this value
-                    // Handle the second event, find the reference in games or practices
-                    String[] eventInfo2 = eventName2.split(" ");
-                    for(int k = 0; k < eventInfo2.length; k++) {
-                        if(eventInfo2[k].equals("PRC") || eventInfo2[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName2) ) {
-                                event2 = practices.get(j);
-                            }
-                        }
-                    }
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName2) ) {
-                                event2 = games.get(j);
-                            }
-                        }
-                    }
+                    // Handle the events, find the reference in games or practices
+                    isPractice = isPractice(eventName1);
+                    event1 = getEvent(isPractice, eventName1);
+                    isPractice = isPractice(eventName2);
+                    event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
                         System.out.println("Event does not exist in possible Events, skipping");
@@ -623,76 +415,10 @@ public class Parser {
                     Event event = null;
                     Slot slot = null;
                     // Handle the event
-                    String[] eventInfo = eventName.split(" ");
-                    for(int k = 0; k < eventInfo.length; k++) {
-                        if(eventInfo[k].equals("PRC") || eventInfo[k].equals("OPN")) {
-                            isPractice = true;
-                        }
-                    }
-                    // If the event is a practice then search practices
-                    if(isPractice) {
-                        for(int j = 0; j < practices.size(); j++) {
-                            if(practices.get(j).name.equals(eventName) ) {
-                                event = practices.get(j);
-                            }
-                        }
-                    }
-                    // If the event is a game then search games
-                    else {
-                        for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName) ) {
-                                event = games.get(j);
-                            }
-                        }
-                    }
+                    isPractice = isPractice(eventName);
+                    event = getEvent(isPractice, eventName);
                     //Handle the Slot
-                    // If the event is a practice it must be in practice slots
-                    if(isPractice) {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_prac_slots.get(j).startTime == slotTime) {
-                                    slot = m_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        else if(slotDay.equals("TU")) {
-                            for(int j = 0; j < t_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_prac_slots.get(j).startTime == slotTime) {
-                                    slot = t_prac_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Friday
-                        else {
-                            for(int j = 0; j < f_prac_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(f_prac_slots.get(j).startTime == slotTime) {
-                                    slot = f_prac_slots.get(j);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        if(slotDay.equals("MO")) {
-                            for(int j = 0; j < m_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(m_game_slots.get(j).startTime == slotTime) {
-                                    slot = m_game_slots.get(j);
-                                }
-                            }
-                        }
-                        // Must be Tuesday
-                        else {
-                            for(int j = 0; j < t_game_slots.size(); j++) {
-                                // Same day and time slot should be identifier
-                                if(t_game_slots.get(j).startTime == slotTime) {
-                                    slot = t_game_slots.get(j);
-                                }
-                            }
-                        }
-                    }
+                    slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist in possible partial assignments, skipping");
@@ -707,4 +433,109 @@ public class Parser {
                 }
         }
     }
+
+    /*
+     * A method for retrieving an event from either practice or games 
+     * Takes in a Boolean to tell if a practice or game is wanted
+     * and an Identifier (event name) to uniquely identify the wanted event
+     */
+    public Event getEvent(boolean isPractice, String identifier) {
+        Event event = null;
+        if(isPractice) {
+            for(int j = 0; j < practices.size(); j++) {
+                if(practices.get(j).name.equals(identifier) ) {
+                    event = practices.get(j);
+                }
+            }
+        }
+        else {
+            for(int j = 0; j < games.size(); j++) {
+                if(games.get(j).name.equals(identifier) ) {
+                    event = games.get(j);
+                }
+            }
+        }
+        // Null check
+        if(event == null) {
+            System.out.println("getEvent could not find a matching Event, exiting program");
+            System.exit(0);
+        }
+        return event;
+    }
+
+    /*
+     * A method for retrieving a slot from the appropriate slot list
+     * Takes in a Boolean to tell if a practice or game is wanted
+     * and a day (slot day) and a time to uniquely identify the slot
+     */
+    public Slot getSlot(boolean isPractice, String slotDay, int slotTime) {
+        // If the event is a practice it must be in practice slots
+        if(isPractice) {
+            if(slotDay.equals("MO")) {
+                for(int j = 0; j < m_prac_slots.size(); j++) {
+                    // Same day and time slot should be identifier
+                    if(m_prac_slots.get(j).startTime == slotTime) {
+                        return m_prac_slots.get(j);
+                    }
+                }
+            }
+            else if(slotDay.equals("TU")) {
+                for(int j = 0; j < t_prac_slots.size(); j++) {
+                    // Same day and time slot should be identifier
+                    if(t_prac_slots.get(j).startTime == slotTime) {
+                        return t_prac_slots.get(j);
+                    }
+                }
+            }
+            // Must be Friday
+            else {
+                for(int j = 0; j < f_prac_slots.size(); j++) {
+                    // Same day and time slot should be identifier
+                    if(f_prac_slots.get(j).startTime == slotTime) {
+                        return f_prac_slots.get(j);
+                    }
+                }
+            }
+        }
+        // Must be games then
+        else {
+            if(slotDay.equals("MO")) {
+                for(int j = 0; j < m_game_slots.size(); j++) {
+                    // Same day and time slot should be identifier
+                    if(m_game_slots.get(j).startTime == slotTime) {
+                        return m_game_slots.get(j);
+                    }
+                }
+            }
+            // Must be Tuesday
+            else {
+                for(int j = 0; j < t_game_slots.size(); j++) {
+                    // Same day and time slot should be identifier
+                    if(t_game_slots.get(j).startTime == slotTime) {
+                        return t_game_slots.get(j);
+                    }
+                }
+            }
+        }
+        System.out.println("Slot was not found in possible slots, exiting program");
+        System.exit(slotTime);
+        Slot slot = null;// Will never be reached, only for compiler
+        return slot;
+    }
+
+    /*
+     * A method for deciding if an unknown event is a practice or not
+     * Takes in the event name, splits it apart and looks for PRC or OPN
+     * to decide if the event is a practice 
+     */
+    public boolean isPractice(String eventName) {
+        String[] eventInfo = eventName.split(" ");
+        for(int i = 0; i < eventInfo.length; i++) {
+            if(eventInfo[i].equals("PRC") || eventInfo[i].equals("OPN")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
