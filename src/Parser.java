@@ -93,9 +93,9 @@ public class Parser {
         if(lines.length <= 1) return;
         // Switch based on the section head in the file, lowercase only
         switch(lines[0].toLowerCase()){
-            case "name":
+            case "name:":
                 exampleName = lines[1];
-            case "game slots":
+            case "game slots:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and split them based on days
@@ -110,7 +110,7 @@ public class Parser {
                         addSlot(false, slotInfo, TUESDAY);
                     }
                 }
-            case "practice slots":
+            case "practice slots:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and separate them based on days
@@ -129,7 +129,7 @@ public class Parser {
                         addSlot(true, slotInfo, FRIDAY);
                     }
                 }
-            case "games":
+            case "games:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
@@ -146,7 +146,7 @@ public class Parser {
                     // Add the final game
                     games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
                 }
-            case "practices":
+            case "practices:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
                     String[] slotInfo = lines[i].split(" ");
@@ -168,7 +168,7 @@ public class Parser {
                     // Add the final practice
                     practices.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
                 }
-            case "not compatible":
+            case "not compatible:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
                     String[] slotInfo = lines[i].split(",");
@@ -208,7 +208,7 @@ public class Parser {
                         ncMap.get(event2).add(event1);
                     }
                 }
-            case "unwanted":
+            case "unwanted:":
                 // Data container = HashMap<Event, HashSet<Slot>> unwantMap
                 for(int i = 1; i < lines.length; i++) {
                     // Split should be Event info, Slot Day, Slot Time
@@ -244,7 +244,7 @@ public class Parser {
                         unwantMap.get(event).add(slot);
                     }
                 }
-            case "preferences":
+            case "preferences:":
                 // Form = HashMap<Event, ArrayList<Object[]>> preferMap;
                 // Object because there is a Slot and preference value
                 for(int i = 1; i < lines.length; i++) {
@@ -287,7 +287,7 @@ public class Parser {
                         preferMap.get(event).add(slotAndPref);
                     }
                 }
-            case "pair":
+            case "pair:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
                     String[] slotInfo = lines[i].split(",");
@@ -330,7 +330,7 @@ public class Parser {
                         pairMap.get(event2).add(event1);
                     }
                 }
-            case "partial assignments":
+            case "partial assignments:":
                 for(int i = 1; i < lines.length; i++) {
                     // Split should be Event info, Slot Day, Slot Time
                     String[] slotInfo = lines[i].split(",");
