@@ -74,7 +74,9 @@ public class Parser {
                 buffer = buffer + s; // Assuming \n is included, can add here if not
             }
         }
-
+        // One last buffer that might be filled
+        fillList(buffer);
+        buffer = ""; // reset buffer
     }
 
     public void openFile(String filename) {
