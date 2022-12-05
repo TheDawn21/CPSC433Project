@@ -9,14 +9,14 @@ import java.util.HashSet;
 /*
  * Refactoring TODO
  * Create function to handle time conversions to int
- * Create constants to compare against for string comparisons
- * Create general method for slots
- * Create an event creation method
  * Create a method for each hashmap
+ * //Create constants to compare against for string comparisons// *DONE*
+ * //Create general method for slots// *DONE*
+ * //Create an event creation method// *DONE*
  * //Create method for testing if an event is a practice// *DONE*
  * //Create method(s) for searching through the games/practices lists for a specific event// *Done*
  * //Create method(s) for searching through the slots lists for a specific slot// *Done*
- * ... probably more
+ * //Create method to handing trimming the input information// *Done*
  */
 
 public class Parser {
@@ -38,6 +38,10 @@ public class Parser {
     HashMap<Event, ArrayList<Object[]>> preferMap;
     HashMap<Event, ArrayList<Event>> pairMap;
     HashMap<Event, Slot> paMap;
+
+    static final int MONDAY = 1; // Represents M/W/F or M/W
+    static final int TUESDAY = 2; // Represents T/TH
+    static final int FRIDAY = 3; // Only for Practices
 
     public Parser(String inFilename) {
         openFile(inFilename);
@@ -93,47 +97,14 @@ public class Parser {
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and split them based on days
                     String[] slotInfo = lines[i].split(",");
-                    // This should trim all whitespace around the line coming from spaces after commas
-                    for(int j = 0; i < slotInfo.length; i++) {
-                        slotInfo[j] = slotInfo[j].trim();
-                    }
+                    trimInput(slotInfo); // Get rid of whitespace
                     // Monday specific slots
                     if(slotInfo[0].equals("MO")){
-                        String day = slotInfo[0];
-                        //String startTime = slotInfo[1];
-                        // 18:00 should become 1800
-                        // Assume start times are all valid, i.e. no 2400
-                        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        int endTime = startTime + 100; // Add in an hour
-                        int gameMax = Integer.parseInt(slotInfo[2]); 
-                        int gameMin = Integer.parseInt(slotInfo[3]); 
-                        // Special must be false on mondays
-                        boolean special = false; 
-                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        addSlot(false, slotInfo, MONDAY);
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
-                        // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
-                        String day = slotInfo[0];
-                        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        int endTime;
-                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0]);
-                        Integer startMins = Integer.parseInt((slotInfo[1].split(":"))[1]);
-                        boolean special = false;
-                        // Account for a special game slot, the only special game slot
-                        if(startHour == 11) special = true;
-                        // MAke the end time for which the minutes will flip and hour will be 1 or 2 hours ahead
-                        if(startMins == 30){
-                            startHour += 2;
-                            endTime = startHour * 100;
-                        }
-                        else{
-                            startHour+=1;
-                            endTime = (startHour * 100) + 30;
-                        }
-                        int gameMax = Integer.parseInt(slotInfo[2]); 
-                        int gameMin = Integer.parseInt(slotInfo[3]); 
-                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        addSlot(false, slotInfo, TUESDAY);
                     }
                 }
             case "practice slots":
@@ -141,46 +112,18 @@ public class Parser {
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and separate them based on days
                     String[] slotInfo = lines[i].split(",");
-                    // This should trim all whitespace around the line coming from spaces after commas
-                    for(int j = 0; i < slotInfo.length; i++) {
-                        slotInfo[j] = slotInfo[j].trim();
-                    }
+                    trimInput(slotInfo); // Get rid of whitespace
                     // Monday specific slots
                     if(slotInfo[0].equals("MO")){
-                        String day = slotInfo[0];
-                        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        int endTime = startTime + 100; // Add in an hour
-                        int gameMax = Integer.parseInt(slotInfo[2]); 
-                        int gameMin = Integer.parseInt(slotInfo[3]); 
-                        // Special must be false on mondays
-                        boolean special = false; 
-                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        addSlot(true, slotInfo, MONDAY);
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
-                        // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
-                        String day = slotInfo[0];
-                        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+1;
-                        int endTime = startHour * 100; //+ (slotInfo[1].split(":"))[1];
-                        boolean special = false; 
-                        // Account for a special practice slot, the only special practice slot
-                        if(startHour == 18) special = true;
-                        int gameMax = Integer.parseInt(slotInfo[2]); 
-                        int gameMin = Integer.parseInt(slotInfo[3]); 
-                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        addSlot(true, slotInfo, TUESDAY);
                     }
                     // Friday specific slots
                     else if(slotInfo[0].equals("FR")) {
-                        // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
-                        String day = slotInfo[0];
-                        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        int endTime = startTime + 200;
-                        // Special must be false on fridays
-                        boolean special = false; 
-                        int gameMax = Integer.parseInt(slotInfo[2]); 
-                        int gameMin = Integer.parseInt(slotInfo[3]); 
-                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        addSlot(true, slotInfo, FRIDAY);
                     }
                 }
             case "games":
@@ -243,9 +186,10 @@ public class Parser {
                     // Read each line and assign them into the games list
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 2) continue; // Make sure there are two events in this line
+                    trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
-                    String eventName1 = slotInfo[0].trim();
-                    String eventName2 = slotInfo[1].trim();
+                    String eventName1 = slotInfo[0];
+                    String eventName2 = slotInfo[1];
                     Event event1 = null;
                     Event event2 = null;
                     // Handle the events, find the reference in games or practices
@@ -287,10 +231,11 @@ public class Parser {
                         System.out.println("Unwanted does not have 3 items, skipping line");
                         continue; // Make sure there are an event, slot day, and slot time
                     }
+                    trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
-                    String eventName = slotInfo[0].trim(); 
-                    String slotDay = slotInfo[1].trim();
-                    int slotTime = Integer.parseInt((slotInfo[2].trim()).replace(":", ""));
+                    String eventName = slotInfo[0]; 
+                    String slotDay = slotInfo[1];
+                    int slotTime = Integer.parseInt((slotInfo[2]).replace(":", ""));
                     Event event = null;
                     Slot slot = null;
                     // Handle the event
@@ -323,11 +268,12 @@ public class Parser {
                         System.out.println("Preference does not have 4 entries, skipping line");
                         continue; // Make sure there are two events
                     }
+                    trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
-                    String eventName = slotInfo[2].trim(); 
-                    String slotDay = slotInfo[0].trim();
-                    int slotTime = Integer.parseInt((slotInfo[1].trim()).replace(":", ""));
-                    int prefVal = Integer.parseInt((slotInfo[3].trim()));
+                    String eventName = slotInfo[2]; 
+                    String slotDay = slotInfo[0];
+                    int slotTime = Integer.parseInt((slotInfo[1]).replace(":", ""));
+                    int prefVal = Integer.parseInt((slotInfo[3]));
                     Event event = null;
                     Slot slot = null;
                     // Handle the Event
@@ -365,9 +311,10 @@ public class Parser {
                         System.out.println("Pair does not have two Events, skipping line");
                         continue; // Make sure there are two events
                     }
+                    trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
-                    String eventName1 = slotInfo[0].trim(); 
-                    String eventName2 = slotInfo[1].trim();
+                    String eventName1 = slotInfo[0]; 
+                    String eventName2 = slotInfo[1];
                     Event event1 = null;
                     Event event2 = null;
                     // Handle the events, find the reference in games or practices
@@ -408,10 +355,11 @@ public class Parser {
                         System.out.println("Partial Assignments does not have 3 items, skipping line");
                         continue; // Make sure there are an event, slot day, and slot time
                     }
+                    trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
-                    String eventName = slotInfo[0].trim(); 
-                    String slotDay = slotInfo[1].trim();
-                    int slotTime = Integer.parseInt((slotInfo[2].trim()).replace(":", ""));
+                    String eventName = slotInfo[0]; 
+                    String slotDay = slotInfo[1];
+                    int slotTime = Integer.parseInt((slotInfo[2]).replace(":", ""));
                     Event event = null;
                     Slot slot = null;
                     // Handle the event
@@ -536,6 +484,58 @@ public class Parser {
             }
         }
         return false;
+    }
+
+    /*
+     * A method for creating a slot 
+     * Takes in a boolean for identifying practice and the slot info 
+     * as well as a daycode to identify day
+     */
+    public void addSlot(boolean isPractice, String[] slotInfo, int dayCode) {
+        String day = slotInfo[0];
+        int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
+        int max = Integer.parseInt(slotInfo[2]); 
+        int min = Integer.parseInt(slotInfo[3]); 
+        boolean special = false; 
+        if(isPractice) {
+            if(dayCode == MONDAY) {
+                int endTime = startTime + 100; // Add in an hour          
+                m_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+            }
+            else if(dayCode == TUESDAY) {
+                if(startTime == 1800) special = true; // Special showcase games/practices
+                int endTime = startTime + 100; // Add in an hour    
+                t_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+            }
+            else if(dayCode == FRIDAY) {
+                int endTime = startTime + 200; // Add in two hours    
+                f_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+            }
+        }
+        else {
+            if(dayCode == MONDAY) {
+                int endTime = startTime + 100; // Add in an hour          
+                m_game_slots.add(new Slot(day, startTime, endTime, max, min, special));
+            }
+            else if(dayCode == TUESDAY) {
+                if(startTime == 1100) special = true; // Special league-wide meeting at 11
+                int endTime = 0; // Defualt, should be replaced
+                // Get last two digits from string, Max checks for length less than 2
+                int minutes = Integer.parseInt(slotInfo[1].substring(Math.max(slotInfo[1].length()-2, 0)));
+                if(minutes == 30) endTime = endTime + 200 - 30; // Add in an hour and a half to 30 min
+                else endTime = endTime + 100 + 30; // Add in an hour and a half to flat hour
+                t_game_slots.add(new Slot(day, startTime, endTime, max, min, special));
+            }
+        }
+    }
+
+    /*
+     * A method to trim off whitespace for each entry in a given array of info
+     */
+    public void trimInput(String[] toTrim) {
+        for(int i = 0; i < toTrim.length; i++) {
+            toTrim[i] = toTrim[i].trim();
+        }
     }
 
 }
