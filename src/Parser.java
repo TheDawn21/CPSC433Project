@@ -10,13 +10,14 @@ import java.util.HashSet;
  * Refactoring TODO
  * Create function to handle time conversions to int
  * Create a method for each hashmap
+ * //Create a method for extracting the Age and Tier from string// *DONE*
  * //Create constants to compare against for string comparisons// *DONE*
  * //Create general method for slots// *DONE*
  * //Create an event creation method// *DONE*
  * //Create method for testing if an event is a practice// *DONE*
- * //Create method(s) for searching through the games/practices lists for a specific event// *Done*
- * //Create method(s) for searching through the slots lists for a specific slot// *Done*
- * //Create method to handing trimming the input information// *Done*
+ * //Create method(s) for searching through the games/practices lists for a specific event// *DONE*
+ * //Create method(s) for searching through the slots lists for a specific slot// *DONE*
+ * //Create method to handing trimming the input information// *DONE*
  */
 
 public class Parser {
@@ -133,17 +134,9 @@ public class Parser {
                     String[] slotInfo = lines[i].split(" ");
                     // Dealing with the age group and tier
                     String ageAndTier = slotInfo[1];
-                    String age;
-                    String tier;
-                    if(ageAndTier.length() == 3) { // if there is no tier
-                        age = ageAndTier.substring(0, 3);
-                        tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
-                    }
-                    else {
-                        // Assume age group always has 2 numbers after the U, so 3 letters in
-                        age = ageAndTier.substring(0, 3);
-                        tier = ageAndTier.substring(3); // Can contain special S charcter
-                    }
+                    String[] ageTier = extractAgeAndTier(ageAndTier);
+                    String age = ageTier[0];
+                    String tier = ageTier[1];
                     // Dealing with division
                     int divFinal = Integer.parseInt(slotInfo[2]); // Should always be here
                     // Dealing with the type of event
@@ -157,17 +150,9 @@ public class Parser {
                     String[] slotInfo = lines[i].split(" ");
                     // Dealing with the age group and tier
                     String ageAndTier = slotInfo[1];
-                    String age;
-                    String tier;
-                    if(ageAndTier.length() == 3) { 
-                        age = ageAndTier.substring(0, 3);
-                        tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
-                    }
-                    else {
-                        // Assume age group always has 2 numbers after the U, so 3 letters in
-                        age = ageAndTier.substring(0, 3);
-                        tier = ageAndTier.substring(3); // Can contain special S charcter
-                    }
+                    String[] ageTier = extractAgeAndTier(ageAndTier);
+                    String age = ageTier[0];
+                    String tier = ageTier[1];
                     // Dealing with division, for practices div can be in different positions
                     String div = "";
                     for(int j = 0; i < slotInfo.length; i++) {
@@ -536,6 +521,27 @@ public class Parser {
         for(int i = 0; i < toTrim.length; i++) {
             toTrim[i] = toTrim[i].trim();
         }
+    }
+
+    /*
+     * A method to extract the age and tier out of their combined string
+     */
+    public String[] extractAgeAndTier(String ageAndTier) {
+        String[] ageTier = new String[2];
+        if(ageAndTier.length() == 3) { // if there is no tier
+            ageTier[0] = ageAndTier.substring(0, 3);
+            ageTier[1] = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
+        }
+        else {
+            // Assume age group always has 2 numbers after the U, so 3 letters in
+            ageTier[0] = ageAndTier.substring(0, 3);
+            ageTier[1] = ageAndTier.substring(3); // Can contain special S charcter
+        }
+        if(ageTier[0] == null || ageTier[1] == null) {
+            System.out.println("Age and Tier was null, exiting");
+            System.exit(0);
+        }
+        return ageTier;
     }
 
 }
