@@ -1,22 +1,24 @@
-//game prac not compatible should error 
+//game game not compatible should work
 Name:
-test53
+test57
 
 Game slots:
 MO, 8:00, 6, 0
+MO, 9:00, 6, 0
 
 Practice slots: 
 MO, 8:00, 2, 1 
 
 Games: 
 CSMA U13T3 DIV 01 
+CSMA U13T3 DIV 02
 
 Practices: 
 CSMA U13T3 DIV 01 PRC 01 
 CSMA U13T3 DIV 02 OPN 02 
 
 Not compatible: 
-CSMA U13T3 DIV 01, CSMA U13T3 DIV 02 OPN 02 
+CSMA U13T3 DIV 02, CSMA U13T3 DIV 01
 
 Unwanted:  
 
