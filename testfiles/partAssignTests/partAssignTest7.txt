@@ -1,6 +1,6 @@
 //mon&tue&fri prac & mon&tue gamepart assign
 Name:
-test66
+test69
 
 Game slots: 
 MO, 8:00, 3, 2 
