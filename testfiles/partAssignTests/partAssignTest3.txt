@@ -1,6 +1,6 @@
-//no part assign
+//tue game part assign
 Name:
-test63
+test65
 
 Game slots: 
 MO, 8:00, 3, 2 
@@ -33,3 +33,4 @@ Preferences:
 Pair: 
 
 Partial assignments: 
+CMSA U13T3 DIV 01, TU, 9:30
