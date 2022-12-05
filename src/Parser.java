@@ -6,6 +6,11 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/*
+ * Refactoring TODO
+ * 
+ */
+
 public class Parser {
     
     String exampleName;
@@ -48,10 +53,12 @@ public class Parser {
         while(scan.hasNextLine()){
             String s = scan.nextLine();
             if(s.length() == 0) {
-
+                // If an empty line is found send the buffer to fill List as a section has been filled
+                fillList(buffer);
+                buffer = ""; // reset buffer
             }
             else{
-
+                buffer = buffer + s; // Assuming \n is included, can add here if not
             }
         }
 
@@ -90,8 +97,6 @@ public class Parser {
                         // Assume start times are all valid, i.e. no 2400
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
                         int endTime = startTime + 100; // Add in an hour
-                        //Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+1;
-                        //String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
@@ -102,10 +107,7 @@ public class Parser {
                     else if(slotInfo[0].equals("TU")) {
                         // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
                         String day = slotInfo[0];
-
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-
-                        //String startTime = slotInfo[1];
                         int endTime;
                         Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0]);
                         Integer startMins = Integer.parseInt((slotInfo[1].split(":"))[1]);
@@ -138,10 +140,6 @@ public class Parser {
                     // Monday specific slots
                     if(slotInfo[0].equals("MO")){
                         String day = slotInfo[0];
-                        //String startTime = slotInfo[1];
-                        //Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+1;
-                        //String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
-
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
                         int endTime = startTime + 100; // Add in an hour
                         int gameMax = Integer.parseInt(slotInfo[2]); 
@@ -154,7 +152,6 @@ public class Parser {
                     else if(slotInfo[0].equals("TU")) {
                         // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
                         String day = slotInfo[0];
-                        //String startTime = slotInfo[1];
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
                         Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+1;
                         int endTime = startHour * 100; //+ (slotInfo[1].split(":"))[1];
@@ -169,10 +166,7 @@ public class Parser {
                     else if(slotInfo[0].equals("FR")) {
                         // IF a game slot is 11-12:30 Tues/Thurs don't include in available slots?
                         String day = slotInfo[0];
-                        //String startTime = slotInfo[1];
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        //Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+2; // Add 2 this time for Friday
-                        //String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
                         int endTime = startTime + 200;
                         // Special must be false on fridays
                         boolean special = false; 
