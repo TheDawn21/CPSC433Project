@@ -96,7 +96,7 @@ public class Parser {
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
                         boolean special = false; 
-//                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        m_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
@@ -123,7 +123,7 @@ public class Parser {
                         }
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-//                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        t_game_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "practice slots":
@@ -148,7 +148,7 @@ public class Parser {
                         int gameMin = Integer.parseInt(slotInfo[3]); 
                         // Special must be false on mondays
                         boolean special = false; 
-//                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        m_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Tuesday specific slots
                     else if(slotInfo[0].equals("TU")) {
@@ -163,7 +163,7 @@ public class Parser {
                         if(startHour == 18) special = true;
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-//                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        t_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                     // Friday specific slots
                     else if(slotInfo[0].equals("FR")) {
@@ -171,14 +171,14 @@ public class Parser {
                         String day = slotInfo[0];
                         //String startTime = slotInfo[1];
                         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
-                        Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+2; // Add 2 this time for Friday
+                        //Integer startHour = Integer.parseInt((slotInfo[1].split(":"))[0])+2; // Add 2 this time for Friday
                         //String endTime = (startHour).toString() +":"+ (slotInfo[1].split(":"))[1];
                         int endTime = startTime + 200;
                         // Special must be false on fridays
                         boolean special = false; 
                         int gameMax = Integer.parseInt(slotInfo[2]); 
                         int gameMin = Integer.parseInt(slotInfo[3]); 
-//                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
+                        f_prac_slots.add(new Slot(day, startTime, endTime, gameMax, gameMin, special));
                     }
                 }
             case "games":
