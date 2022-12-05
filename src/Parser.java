@@ -291,8 +291,9 @@ public class Parser {
                     }
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        System.out.println("Event does not exist in possible Events");
-                        System.exit(0);
+                        System.out.println("Event does not exist in possible Events, skipping");
+                        continue;
+                        //System.exit(0);
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(ncMap.get(event1) == null) {
@@ -314,15 +315,120 @@ public class Parser {
                     }
                 }
             case "unwanted":
+                // Data container = HashMap<Event, HashSet<Slot>> unwantMap
+                for(int i = 1; i < lines.length; i++) {
+                    // Split should be Event info, Slot Day, Slot Time
+                    String[] slotInfo = lines[i].split(",");
+                    if(slotInfo.length != 3) {
+                        System.out.println("Unwanted does not have 3 items, skipping line");
+                        continue; // Make sure there are an event, slot day, and slot time
+                    }
+                    boolean isPractice = false;
+                    String eventName = slotInfo[0].trim(); 
+                    String slotDay = slotInfo[1].trim();
+                    int slotTime = Integer.parseInt((slotInfo[1].trim()).replace(":", ""));
+                    Event event = null;
+                    Slot slot = null;
+                    // Handle the event
+                    String[] eventInfo1 = eventName.split(" ");
+                    for(int k = 0; k < eventInfo1.length; k++) {
+                        if(eventInfo1[k].equals("PRC") || eventInfo1[k].equals("OPN")) {
+                            isPractice = true;
+                        }
+                    }
+                    // If the event is a practice then search practices
+                    if(isPractice) {
+                        for(int j = 0; j < practices.size(); j++) {
+                            if(practices.get(j).name.equals(eventName) ) {
+                                event = practices.get(j);
+                            }
+                        }
+                    }
+                    // If the event is a game then search games
+                    else {
+                        for(int j = 0; j < games.size(); j++) {
+                            if(games.get(j).name.equals(eventName) ) {
+                                event = games.get(j);
+                            }
+                        }
+                    }
+                    //Handle the Slot
+                    // If the event is a practice it must be in practice slots
+                    if(isPractice) {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_prac_slots.get(j).startTime == slotTime) {
+                                    slot = m_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        else if(slotDay.equals("TU")) {
+                            for(int j = 0; j < t_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_prac_slots.get(j).startTime == slotTime) {
+                                    slot = t_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Friday
+                        else {
+                            for(int j = 0; j < f_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(f_prac_slots.get(j).startTime == slotTime) {
+                                    slot = f_prac_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_game_slots.get(j).startTime == slotTime) {
+                                    slot = m_game_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Tuesday
+                        else {
+                            for(int j = 0; j < t_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_game_slots.get(j).startTime == slotTime) {
+                                    slot = t_game_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    // Check for if one of the events does not exist in games/practices
+                    if(event == null || slot == null) {
+                        System.out.println("Event or slot does not exist in possible unwanted, skipping");
+                        continue;
+                        //System.exit(0); Not exit behaviour for now
+                    }
+                    // Add hashmap entry for event 1 -> event 2
+                    if(unwantMap.get(event) == null) {
+                        HashSet<Slot> mapVal = new HashSet<Slot>();
+                        mapVal.add(slot);
+                        unwantMap.put(event, mapVal);
+                    }
+                    else {
+                        unwantMap.get(event).add(slot);
+                    }
+                }
             case "preferences":
+                
             case "pair":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
                     String[] slotInfo = lines[i].split(",");
-                    if(slotInfo.length != 2) continue; // Make sure there are two events in this line
+                    if(slotInfo.length != 2) {
+                        System.out.println("Pair does not have two Events, skipping line");
+                        continue; // Make sure there are two events
+                    }
                     boolean isPractice = false;
-                    String eventName1 = slotInfo[0]; 
-                    String eventName2 = slotInfo[1];
+                    String eventName1 = slotInfo[0].trim(); 
+                    String eventName2 = slotInfo[1].trim();
                     Event event1 = null;
                     Event event2 = null;
                     // Handle the first event, find the reference in games or practices
@@ -370,14 +476,15 @@ public class Parser {
                     }
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        System.out.println("Event does not exist in possible Events");
+                        System.out.println("Event does not exist in possible Events, skipping");
+                        continue;
                         //System.exit(0); Not exit behaviour for now
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(pairMap.get(event1) == null) {
                         ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event2);
-//                        ncMap.put(event1, mapVal);
+                        pairMap.put(event1, mapVal);
                     }
                     else {
                         pairMap.get(event1).add(event2);
@@ -386,7 +493,7 @@ public class Parser {
                     if(pairMap.get(event2) == null) {
                         ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event1);
-//                        ncMap.put(event2, mapVal);
+                        pairMap.put(event2, mapVal);
                     }
                     else {
                         pairMap.get(event2).add(event1);
