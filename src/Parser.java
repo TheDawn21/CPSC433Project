@@ -8,7 +8,15 @@ import java.util.HashSet;
 
 /*
  * Refactoring TODO
- * 
+ * Create function to handle time conversions to int
+ * Create constants to compare against for string comparisons
+ * Create general method for slots
+ * Create an event creation method
+ * Create a method for each hashmap
+ * Create method for testing if an event is a practice
+ * Create method(s) for searching through the games/practices lists for a specific event
+ * Create method(s) for searching through the slots lists for a specific slot
+ * ... probably more
  */
 
 public class Parser {
@@ -185,7 +193,7 @@ public class Parser {
                     String age;
                     String tier;
                     if(ageAndTier.length() == 3) { // if there is no tier
-                        age = "O18";
+                        age = ageAndTier.substring(0, 3);
                         tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
                     }
                     else {
@@ -208,8 +216,8 @@ public class Parser {
                     String ageAndTier = slotInfo[1];
                     String age;
                     String tier;
-                    if(ageAndTier.charAt(0) == 'O') { //Idk if char needs to be .equals
-                        age = "O18";
+                    if(ageAndTier.length() == 3) { 
+                        age = ageAndTier.substring(0, 3);
                         tier = "T0"; // DEFAULT FOR NOW, SUBJECT TO CHANGE
                     }
                     else {
