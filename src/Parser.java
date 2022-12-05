@@ -187,8 +187,7 @@ public class Parser {
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
                         System.out.println("Event does not exist in possible Events, skipping");
-                        continue;
-                        //System.exit(0);
+                        System.exit(0);
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(ncMap.get(event1) == null) {
@@ -216,7 +215,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 3) {
                         System.out.println("Unwanted does not have 3 items, skipping line");
-                        continue; // Make sure there are an event, slot day, and slot time
+                        System.exit(0); // Make sure there are an event, slot day, and slot time
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -233,8 +232,7 @@ public class Parser {
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist in possible unwanted, skipping");
-                        continue;
-                        //System.exit(0); Not exit behaviour for now
+                        System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Slot
                     if(unwantMap.get(event) == null) {
@@ -253,7 +251,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 4) {
                         System.out.println("Preference does not have 4 entries, skipping line");
-                        continue; // Make sure there are two events
+                        System.exit(0); // Make sure there are two events
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -271,8 +269,7 @@ public class Parser {
                     // Check for if one of the entries does not exist
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist, skipping");
-                        continue;
-                        //System.exit(0); Not exit behaviour for now
+                        System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Object[2](slot,prefVal)
                     if(preferMap.get(event) == null) {
@@ -312,8 +309,7 @@ public class Parser {
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
                         System.out.println("Event does not exist in possible Events, skipping");
-                        continue;
-                        //System.exit(0); Not exit behaviour for now
+                        System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(pairMap.get(event1) == null) {
@@ -340,7 +336,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 3) {
                         System.out.println("Partial Assignments does not have 3 items, skipping line");
-                        continue; // Make sure there are an event, slot day, and slot time
+                        System.exit(0); // Make sure there are an event, slot day, and slot time
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -357,7 +353,7 @@ public class Parser {
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
                         System.out.println("Event or slot does not exist in possible partial assignments, skipping");
-                        continue;
+                        System.exit(0);
                         //System.exit(0); Not exit behaviour for now
                     }
                     // Add hashmap entry for event -> Slot
