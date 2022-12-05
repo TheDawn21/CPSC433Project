@@ -607,6 +607,102 @@ public class Parser {
                     }
                 }
             case "partial assignments":
+                for(int i = 1; i < lines.length; i++) {
+                    // Split should be Event info, Slot Day, Slot Time
+                    String[] slotInfo = lines[i].split(",");
+                    if(slotInfo.length != 3) {
+                        System.out.println("Partial Assignments does not have 3 items, skipping line");
+                        continue; // Make sure there are an event, slot day, and slot time
+                    }
+                    boolean isPractice = false;
+                    String eventName = slotInfo[0].trim(); 
+                    String slotDay = slotInfo[1].trim();
+                    int slotTime = Integer.parseInt((slotInfo[2].trim()).replace(":", ""));
+                    Event event = null;
+                    Slot slot = null;
+                    // Handle the event
+                    String[] eventInfo = eventName.split(" ");
+                    for(int k = 0; k < eventInfo.length; k++) {
+                        if(eventInfo[k].equals("PRC") || eventInfo[k].equals("OPN")) {
+                            isPractice = true;
+                        }
+                    }
+                    // If the event is a practice then search practices
+                    if(isPractice) {
+                        for(int j = 0; j < practices.size(); j++) {
+                            if(practices.get(j).name.equals(eventName) ) {
+                                event = practices.get(j);
+                            }
+                        }
+                    }
+                    // If the event is a game then search games
+                    else {
+                        for(int j = 0; j < games.size(); j++) {
+                            if(games.get(j).name.equals(eventName) ) {
+                                event = games.get(j);
+                            }
+                        }
+                    }
+                    //Handle the Slot
+                    // If the event is a practice it must be in practice slots
+                    if(isPractice) {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_prac_slots.get(j).startTime == slotTime) {
+                                    slot = m_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        else if(slotDay.equals("TU")) {
+                            for(int j = 0; j < t_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_prac_slots.get(j).startTime == slotTime) {
+                                    slot = t_prac_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Friday
+                        else {
+                            for(int j = 0; j < f_prac_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(f_prac_slots.get(j).startTime == slotTime) {
+                                    slot = f_prac_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if(slotDay.equals("MO")) {
+                            for(int j = 0; j < m_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(m_game_slots.get(j).startTime == slotTime) {
+                                    slot = m_game_slots.get(j);
+                                }
+                            }
+                        }
+                        // Must be Tuesday
+                        else {
+                            for(int j = 0; j < t_game_slots.size(); j++) {
+                                // Same day and time slot should be identifier
+                                if(t_game_slots.get(j).startTime == slotTime) {
+                                    slot = t_game_slots.get(j);
+                                }
+                            }
+                        }
+                    }
+                    // Check for if one of the events does not exist in games/practices
+                    if(event == null || slot == null) {
+                        System.out.println("Event or slot does not exist in possible partial assignments, skipping");
+                        continue;
+                        //System.exit(0); Not exit behaviour for now
+                    }
+                    // Add hashmap entry for event -> Slot
+                    // Should only be one entry
+                    if(paMap.get(event) == null) {
+                        paMap.put(event, slot);
+                    }
+                }
         }
     }
 }
