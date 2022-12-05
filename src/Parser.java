@@ -363,7 +363,7 @@ public class Parser {
                     }
                     else {
                         for(int j = 0; j < games.size(); j++) {
-                            if(games.get(j).name.equals(eventName1) ) {
+                            if(games.get(j).name.equals(eventName2) ) {
                                 event2 = games.get(j);
                             }
                         }
@@ -371,25 +371,25 @@ public class Parser {
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
                         System.out.println("Event does not exist in possible Events");
-                        System.exit(0);
+                        //System.exit(0); Not exit behaviour for now
                     }
                     // Add hashmap entry for event 1 -> event 2
-                    if(ncMap.get(event1) == null) {
-                        HashSet<Event> mapVal = new HashSet<Event>();
+                    if(pairMap.get(event1) == null) {
+                        ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event2);
 //                        ncMap.put(event1, mapVal);
                     }
                     else {
-                        ncMap.get(event1).add(event2);
+                        pairMap.get(event1).add(event2);
                     }
                     // Add hashmap entry for event 2 -> event 1
-                    if(ncMap.get(event2) == null) {
-                        HashSet<Event> mapVal = new HashSet<Event>();
+                    if(pairMap.get(event2) == null) {
+                        ArrayList<Event> mapVal = new ArrayList<Event>();
                         mapVal.add(event1);
 //                        ncMap.put(event2, mapVal);
                     }
                     else {
-                        ncMap.get(event2).add(event1);
+                        pairMap.get(event2).add(event1);
                     }
                 }
             case "partial assignments":
