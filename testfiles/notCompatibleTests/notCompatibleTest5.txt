@@ -1,6 +1,6 @@
-//game prac not compatible should error 
+//prac game not compatible should error 
 Name:
-test53
+test54
 
 Game slots:
 MO, 8:00, 6, 0
@@ -16,7 +16,7 @@ CSMA U13T3 DIV 01 PRC 01
 CSMA U13T3 DIV 02 OPN 02 
 
 Not compatible: 
-CSMA U13T3 DIV 01, CSMA U13T3 DIV 02 OPN 02 
+CSMA U13T3 DIV 02 OPN 02, CSMA U13T3 DIV 01
 
 Unwanted:  
 

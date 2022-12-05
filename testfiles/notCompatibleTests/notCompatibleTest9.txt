@@ -1,0 +1,33 @@
+//game game, game prac, prac game and prac prac not compatible should work
+Name:
+test58
+
+Game slots:
+MO, 8:00, 2, 0
+MO, 14:00, 6, 1
+
+Practice slots: 
+MO, 10:00, 10, 0 
+FR, 8:00, 3, 1
+
+Games: 
+CSMA U13T3 DIV 01 
+CSMA U14T2 DIV 02
+
+Practices: 
+CSMA U15T5 DIV 07 PRC 01 
+CSMA U17T11 DIV 36 OPN 02 
+
+Not compatible: 
+CSMA U13T3 DIV 01, CSMA U14T2 DIV 02
+CSMA U14T2 DIV 02, CSMA U17T11 DIV 36 OPN 02
+CSMA U17T11 DIV 36 OPN 02, CSMA U13T3 DIV 01
+CSMA U15T5 DIV 07 PRC 01, CSMA U17T11 DIV 36 OPN 02 
+
+Unwanted:  
+
+Preferences: 
+
+Pair: 
+
+Partial assignments: 
