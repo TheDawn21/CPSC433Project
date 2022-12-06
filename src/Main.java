@@ -16,7 +16,7 @@ public class Main {
                 System.out.println(aTree.bestSched.score);
 
             } catch (NumberFormatException e) {
-                System.err.println("Argument error");
+                System.err.println("Argument error: " + e.getLocalizedMessage());
                 System.exit(1);
             }
             
@@ -26,15 +26,64 @@ public class Main {
     }
 
     public static void testParserOutput(Parser p) {
+        System.out.println("\n**TESTING PARSER OUTPUT**\n");
         System.out.println(p.exampleName);
-        System.out.println(p.m_game_slots);
-        System.out.println(p.t_game_slots);
-        System.out.println(p.m_prac_slots);
-        System.out.println(p.t_prac_slots);
-        System.out.println(p.f_prac_slots);
-
-        System.out.println(p.games);
-        System.out.println(p.practices);
+        System.out.println("Monday Game Slots");
+        for(int i = 0; i < p.m_game_slots.size(); i++) {
+            Slot slot = p.m_game_slots.get(i);
+            System.out.println(slot.day);
+            System.out.println(slot.startTime); System.out.println(slot.endTime);
+            System.out.println(slot.max); System.out.println(slot.min);
+            System.out.println(slot.isSpecial);
+        }
+        System.out.println("Tuesday Game Slots");
+        for(int i = 0; i < p.t_game_slots.size(); i++) {
+            Slot slot = p.t_game_slots.get(i);
+            System.out.println(slot.day);
+            System.out.println(slot.startTime); System.out.println(slot.endTime);
+            System.out.println(slot.max); System.out.println(slot.min);
+            System.out.println(slot.isSpecial);
+        }
+        System.out.println("Monday Practice Slots");
+        for(int i = 0; i < p.m_prac_slots.size(); i++) {
+            Slot slot = p.m_prac_slots.get(i);
+            System.out.println(slot.day);
+            System.out.println(slot.startTime); System.out.println(slot.endTime);
+            System.out.println(slot.max); System.out.println(slot.min);
+            System.out.println(slot.isSpecial);
+        }
+        System.out.println("Tuesday Practice Slots");
+        for(int i = 0; i < p.t_prac_slots.size(); i++) {
+            Slot slot = p.t_prac_slots.get(i);
+            System.out.println(slot.day);
+            System.out.println(slot.startTime); System.out.println(slot.endTime);
+            System.out.println(slot.max); System.out.println(slot.min);
+            System.out.println(slot.isSpecial);
+        }
+        System.out.println("Friday Practice Slots");
+        for(int i = 0; i < p.f_prac_slots.size(); i++) {
+            Slot slot = p.f_prac_slots.get(i);
+            System.out.println(slot.day);
+            System.out.println(slot.startTime); System.out.println(slot.endTime);
+            System.out.println(slot.max); System.out.println(slot.min);
+            System.out.println(slot.isSpecial);
+        }
+        System.out.println("Games");
+        for(int i = 0; i < p.games.size(); i++) {
+            Event event = p.games.get(i);
+            System.out.println(event.org);
+            System.out.println(event.age); System.out.println(event.tier);
+            System.out.println(event.div); 
+            System.out.println(event.type);
+        }
+        System.out.println("Practices");
+        for(int i = 0; i < p.practices.size(); i++) {
+            Event event = p.practices.get(i);
+            System.out.println(event.org);
+            System.out.println(event.age); System.out.println(event.tier);
+            System.out.println(event.div); 
+            System.out.println(event.type);
+        }
 
         System.out.println(p.ncMap);
         System.out.println(p.unwantMap);

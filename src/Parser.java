@@ -95,13 +95,11 @@ public class Parser {
     // Fill list will fill the correct array given a String buffer which are a section of the file
     public void fillList(String buff) {
         String[] lines = buff.split("\n");
-        System.out.println(lines.length);
-        for(int i = 0; i < lines.length; i++) {
-            System.out.println(lines[i]);
-        }
         if(lines.length <= 1) return;
+        System.out.println(buff);
+        String header = lines[0].toLowerCase().trim();
         // Switch based on the section head in the file, lowercase only
-        switch(lines[0].toLowerCase()){
+        switch(header){
             case "name:":
                 exampleName = lines[1];
                 break;
@@ -152,7 +150,7 @@ public class Parser {
                     String age = ageTier[0];
                     String tier = ageTier[1];
                     // Dealing with division
-                    int divFinal = Integer.parseInt(slotInfo[2]); // Should always be here
+                    int divFinal = Integer.parseInt(slotInfo[3]); // Should always be here
                     // Dealing with the type of event
                     boolean pracOrGame = true; // game by default
                     // Add the final game
@@ -169,8 +167,8 @@ public class Parser {
                     String age = ageTier[0];
                     String tier = ageTier[1];
                     // Dealing with division, for practices div can be in different positions
-                    String div = "";
-                    for(int j = 0; i < slotInfo.length; i++) {
+                    String div = "0"; // Default for no division given, all divs share practice
+                    for(int j = 0; j < slotInfo.length; j++) {
                         if (slotInfo[j].equals("DIV")) {
                             div = slotInfo[j+1]; // Should be safe, always next entry
                         }
@@ -393,14 +391,16 @@ public class Parser {
         Event event = null;
         if(isPractice) {
             for(int j = 0; j < practices.size(); j++) {
-                if(practices.get(j).name.equals(identifier) ) {
+                String pracName = practices.get(j).name.trim();
+                if(pracName.equals(identifier.trim()) ) {
                     event = practices.get(j);
                 }
             }
         }
         else {
             for(int j = 0; j < games.size(); j++) {
-                if(games.get(j).name.equals(identifier) ) {
+                String gameName = games.get(j).name.trim();
+                if(gameName.equals(identifier.trim()) ) {
                     event = games.get(j);
                 }
             }
@@ -408,6 +408,7 @@ public class Parser {
         // Null check
         if(event == null) {
             System.out.println("getEvent could not find a matching Event, exiting program");
+            System.out.println(identifier);
             System.exit(0);
         }
         return event;
@@ -421,7 +422,7 @@ public class Parser {
     public Slot getSlot(boolean isPractice, String slotDay, int slotTime) {
         // If the event is a practice it must be in practice slots
         if(isPractice) {
-            if(slotDay.equals("MO")) {
+            if(slotDay.trim().equals("MO")) {
                 for(int j = 0; j < m_prac_slots.size(); j++) {
                     // Same day and time slot should be identifier
                     if(m_prac_slots.get(j).startTime == slotTime) {
@@ -429,7 +430,7 @@ public class Parser {
                     }
                 }
             }
-            else if(slotDay.equals("TU")) {
+            else if(slotDay.trim().equals("TU")) {
                 for(int j = 0; j < t_prac_slots.size(); j++) {
                     // Same day and time slot should be identifier
                     if(t_prac_slots.get(j).startTime == slotTime) {
@@ -449,7 +450,7 @@ public class Parser {
         }
         // Must be games then
         else {
-            if(slotDay.equals("MO")) {
+            if(slotDay.trim().equals("MO")) {
                 for(int j = 0; j < m_game_slots.size(); j++) {
                     // Same day and time slot should be identifier
                     if(m_game_slots.get(j).startTime == slotTime) {
@@ -468,7 +469,8 @@ public class Parser {
             }
         }
         System.out.println("Slot was not found in possible slots, exiting program");
-        System.exit(slotTime);
+        System.out.println(slotDay);System.out.println(slotTime);
+        System.exit(0);
         Slot slot = null;// Will never be reached, only for compiler
         return slot;
     }
@@ -481,7 +483,7 @@ public class Parser {
     public boolean isPractice(String eventName) {
         String[] eventInfo = eventName.split(" ");
         for(int i = 0; i < eventInfo.length; i++) {
-            if(eventInfo[i].equals("PRC") || eventInfo[i].equals("OPN")) {
+            if(eventInfo[i].trim().equals("PRC") || eventInfo[i].trim().equals("OPN")) {
                 return true;
             }
         }
@@ -524,8 +526,8 @@ public class Parser {
                 int endTime = 0; // Defualt, should be replaced
                 // Get last two digits from string, Max checks for length less than 2
                 int minutes = Integer.parseInt(slotInfo[1].substring(Math.max(slotInfo[1].length()-2, 0)));
-                if(minutes == 30) endTime = endTime + 200 - 30; // Add in an hour and a half to 30 min
-                else endTime = endTime + 100 + 30; // Add in an hour and a half to flat hour
+                if(minutes == 30) endTime = startTime + 200 - 30; // Add in an hour and a half to 30 min
+                else endTime = startTime + 100 + 30; // Add in an hour and a half to flat hour
                 t_game_slots.add(new Slot(day, startTime, endTime, max, min, special));
             }
         }
