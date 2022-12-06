@@ -26,19 +26,19 @@ public class Parser {
     File file;
     Scanner scan;
     // All parser arrays on pictures
-    ArrayList<Slot> m_game_slots;
-    ArrayList<Slot> t_game_slots;
-    ArrayList<Slot> m_prac_slots;
-    ArrayList<Slot> t_prac_slots;
-    ArrayList<Slot> f_prac_slots;
-    ArrayList<Event> games;
-    ArrayList<Event> practices;
+    ArrayList<Slot> m_game_slots = new ArrayList<>();
+    ArrayList<Slot> t_game_slots = new ArrayList<>();
+    ArrayList<Slot> m_prac_slots = new ArrayList<>();
+    ArrayList<Slot> t_prac_slots = new ArrayList<>();
+    ArrayList<Slot> f_prac_slots = new ArrayList<>();
+    ArrayList<Event> games  = new ArrayList<>();
+    ArrayList<Event> practices = new ArrayList<>();
     // Hashmaps
-    HashMap<Event, HashSet<Event>> ncMap;// = new HashMap<Event, ArrayList<Event>>();
-    HashMap<Event, HashSet<Slot>> unwantMap;
-    HashMap<Event, ArrayList<Object[]>> preferMap;
-    HashMap<Event, ArrayList<Event>> pairMap;
-    HashMap<Event, Slot> paMap;
+    HashMap<Event, HashSet<Event>> ncMap = new HashMap<Event, HashSet<Event>>();// = new HashMap<Event, ArrayList<Event>>();
+    HashMap<Event, HashSet<Slot>> unwantMap = new HashMap<Event, HashSet<Slot>>();
+    HashMap<Event, ArrayList<Object[]>> preferMap = new HashMap<Event, ArrayList<Object[]>>();
+    HashMap<Event, ArrayList<Event>> pairMap = new HashMap<Event, ArrayList<Event>>();
+    HashMap<Event, Slot> paMap = new HashMap<Event, Slot>();
 
     static final int MONDAY = 1; // Represents M/W/F or M/W
     static final int TUESDAY = 2; // Represents T/TH
@@ -95,13 +95,16 @@ public class Parser {
     // Fill list will fill the correct array given a String buffer which are a section of the file
     public void fillList(String buff) {
         String[] lines = buff.split("\n");
-        System.out.println(buff);
         System.out.println(lines.length);
+        for(int i = 0; i < lines.length; i++) {
+            System.out.println(lines[i]);
+        }
         if(lines.length <= 1) return;
         // Switch based on the section head in the file, lowercase only
         switch(lines[0].toLowerCase()){
             case "name:":
                 exampleName = lines[1];
+                break;
             case "game slots:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
@@ -117,6 +120,7 @@ public class Parser {
                         addSlot(false, slotInfo, TUESDAY);
                     }
                 }
+                break;
             case "practice slots:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
@@ -136,6 +140,7 @@ public class Parser {
                         addSlot(true, slotInfo, FRIDAY);
                     }
                 }
+                break;
             case "games:":
                 // Starts at 1 to skip header
                 for(int i = 1; i < lines.length; i++) {
@@ -153,6 +158,7 @@ public class Parser {
                     // Add the final game
                     games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
                 }
+                break;
             case "practices:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
@@ -175,6 +181,7 @@ public class Parser {
                     // Add the final practice
                     practices.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
                 }
+                break;
             case "not compatible:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
@@ -215,6 +222,7 @@ public class Parser {
                         ncMap.get(event2).add(event1);
                     }
                 }
+                break;
             case "unwanted:":
                 // Data container = HashMap<Event, HashSet<Slot>> unwantMap
                 for(int i = 1; i < lines.length; i++) {
@@ -251,6 +259,7 @@ public class Parser {
                         unwantMap.get(event).add(slot);
                     }
                 }
+                break;
             case "preferences:":
                 // Form = HashMap<Event, ArrayList<Object[]>> preferMap;
                 // Object because there is a Slot and preference value
@@ -294,6 +303,7 @@ public class Parser {
                         preferMap.get(event).add(slotAndPref);
                     }
                 }
+                break;
             case "pair:":
                 for(int i = 1; i < lines.length; i++) {
                     // Read each line and assign them into the games list
@@ -337,6 +347,7 @@ public class Parser {
                         pairMap.get(event2).add(event1);
                     }
                 }
+                break;
             case "partial assignments:":
                 for(int i = 1; i < lines.length; i++) {
                     // Split should be Event info, Slot Day, Slot Time
@@ -369,6 +380,7 @@ public class Parser {
                         paMap.put(event, slot);
                     }
                 }
+                break;
         }
     }
 
