@@ -11,6 +11,7 @@ public class Main {
                     weights_penalties[i-1] = Integer.parseInt(args[i]);
                 }
                 Parser parseObj = new Parser(filename);
+                testParserOutput(parseObj);
                 TreeSearch aTree = new TreeSearch(parseObj);
                 System.out.println(aTree.bestSched.score);
 
@@ -24,7 +25,8 @@ public class Main {
         }
     }
 
-    public void testParserOutput(Parser p) {
+    public static void testParserOutput(Parser p) {
+        System.out.println(p.exampleName);
         System.out.println(p.m_game_slots);
         System.out.println(p.t_game_slots);
         System.out.println(p.m_prac_slots);

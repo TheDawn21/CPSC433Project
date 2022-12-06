@@ -74,7 +74,7 @@ public class Parser {
                 buffer = ""; // reset buffer
             }
             else{
-                buffer = buffer + s; // Assuming \n is included, can add here if not
+                buffer = buffer + s + "\n"; // Assuming \n is included, can add here if not
             }
         }
         // One last buffer that might be filled
@@ -88,12 +88,15 @@ public class Parser {
             file = new File(filename);
         } catch (Exception e) {
             System.out.println(e);
+            System.exit(0);
         }
     }
 
     // Fill list will fill the correct array given a String buffer which are a section of the file
     public void fillList(String buff) {
         String[] lines = buff.split("\n");
+        System.out.println(buff);
+        System.out.println(lines.length);
         if(lines.length <= 1) return;
         // Switch based on the section head in the file, lowercase only
         switch(lines[0].toLowerCase()){
