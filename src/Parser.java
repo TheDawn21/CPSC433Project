@@ -80,6 +80,7 @@ public class Parser {
         // One last buffer that might be filled
         fillList(buffer);
         buffer = ""; // reset buffer
+        scan.close();
     }
 
     public void openFile(String filename) {
