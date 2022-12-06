@@ -65,6 +65,9 @@ public class Parser {
 
         while(scan.hasNextLine()){
             String s = scan.nextLine();
+            if(s.substring(0,2).equals("//")) {
+                continue;
+            }
             if(s.length() == 0) {
                 // If an empty line is found send the buffer to fill List as a section has been filled
                 fillList(buffer);
