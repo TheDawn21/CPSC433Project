@@ -65,7 +65,7 @@ public class Parser {
 
         while(scan.hasNextLine()){
             String s = scan.nextLine();
-            if(s.substring(0,2).equals("//")) {
+            if(s.length() > 2 && s.substring(0,2).equals("//")) {
                 continue;
             }
             if(s.length() == 0) {
