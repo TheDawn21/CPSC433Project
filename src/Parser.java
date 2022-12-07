@@ -507,7 +507,7 @@ public class Parser {
                 m_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
             }
             else if(dayCode == TUESDAY) {
-                if(startTime == 1800) special = true; // Special showcase games/practices
+                if(startTime == 1800) special = true; // Special showcase practice
                 int endTime = startTime + 100; // Add in an hour    
                 t_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
             }
@@ -556,10 +556,11 @@ public class Parser {
             ageTier[0] = ageAndTier.substring(0, 3);
             ageTier[1] = ageAndTier.substring(3); // Can contain special S charcter
         }
-        if(ageTier[0] == null || ageTier[1] == null) {
-            System.out.println("Age and Tier was null, exiting");
-            System.exit(0);
-        }
+        // terminate if either age or tier are null , commented out for now, assumption is to assign T0
+        // if(ageTier[0] == null || ageTier[1] == null) {
+        //     System.out.println("Age and Tier was null, exiting");
+        //     System.exit(0);
+        // }
         return ageTier;
     }
 
