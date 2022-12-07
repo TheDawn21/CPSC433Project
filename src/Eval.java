@@ -164,7 +164,6 @@ public class Eval {
         }
 
         // Check if s is unwanted slot
-        // unwanted should be Hashset
         else if (slotUnwanted(e, s) == true) {
             valid = false;
         }
@@ -185,7 +184,6 @@ public class Eval {
         }
 
         // Check if e is incompatible with a game already assigned to s
-        // notcompatible should be Hashset for efficiency
         else if (notCompatible(sched, e, s) == true) {
             valid = false;
         }
@@ -213,6 +211,7 @@ public class Eval {
 
     // Input: gameSlot, slotList
     // Returns: all practice slots in slotList that overlap with gameSlot
+    // *** Tested and working ****
     public static ArrayList<Slot> findOverlap(Slot gameSlot, ArrayList<Slot> slotList) {
         ArrayList<Slot> overlappingPractices = new ArrayList<Slot>();
 
@@ -244,12 +243,20 @@ public class Eval {
 
 
     // Returns true if assigning e to Slot s violates gamemax
+    // *** Tested and working ***
     public boolean maxInvalid(Schedule sched, Slot s) {
         int max = s.max;
         HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
-        ArrayList<Event> assigned = assignment.get(s);
+        ArrayList<Event> assigned;
+
+        // Check if Slot is in the hashmap
+        if (assignment.containsKey(s)) {
+            assigned = assignment.get(s);
+        } else {
+            return (max > 0);
+        }
         
-        if (assigned.size() == max) {
+        if (assigned.size() <= max) {
             return true;
         } 
 
@@ -260,8 +267,15 @@ public class Eval {
     // Returns true if e conflicts with another event of the same division in s
     public boolean practiceIntersect(Schedule sched, Event e, Slot s) {
         boolean invalid = false;
+        ArrayList<Slot> overlappingSlots;
 
-        ArrayList<Slot> overlappingSlots = overlap.get(s);
+        // Check if slot is a key in overlap
+        if (overlap.containsKey(s)) {
+            overlappingSlots = overlap.get(s);
+        } else {
+            return false;
+        }
+        
         for (int i = 0; i < overlappingSlots.size(); i++) {
             HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
             Slot slot = overlappingSlots.get(i);
@@ -301,10 +315,18 @@ public class Eval {
 
 
     // Returns true if s is an unwanted slot of e
+    // *** Tested and working ****
     public boolean slotUnwanted(Event e, Slot s) {
         boolean invalid = false;
+        HashSet<Slot> unwantedSlots;
 
-        HashSet<Slot> unwantedSlots = input.unwantMap.get(e);
+        // Check if event is not in hashMap
+        if (input.unwantMap.containsKey(e)) {
+            unwantedSlots = input.unwantMap.get(e);
+        } else {
+            return false;
+        }
+        
         if (unwantedSlots.contains(s))
             invalid = true;
         
@@ -313,6 +335,7 @@ public class Eval {
 
 
     // Returns true if e is in Div 9 and s doesn't start after 1800
+    // *** Tested and working ***
     public boolean div9Early(Event e, Slot s) {
         boolean invalid = false;
 
@@ -327,6 +350,7 @@ public class Eval {
 
 
     // Returns true if e in CMSA U12/U13 T1 and it overlaps with a special practice
+    // *** Tested and working ***
     public boolean specialOverlap(Event e, Slot s) {
         boolean invalid = false;
 
@@ -398,6 +422,7 @@ public class Eval {
 
 
     // Returns true if e is a game and s is Tuesday 1100 - 1230
+    // *** Tested and working
     public boolean gameTuesday11(Event e, Slot s) {
         boolean invalid = false;
 
