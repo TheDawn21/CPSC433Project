@@ -1,6 +1,6 @@
-//no pair
+//game prac pair
 Name:
-test76
+test79
 
 Game slots: 
 MO, 8:00, 3, 2 
@@ -31,5 +31,6 @@ Unwanted:
 Preferences: 
 
 Pair: 
+CMSA U13T3 DIV 01, CUSA O18 DIV 01 PRC 01 
 
 Partial assignments: 
