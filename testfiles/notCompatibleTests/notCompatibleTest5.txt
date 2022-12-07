@@ -24,4 +24,5 @@ Preferences:
 
 Pair: 
 
-Partial assignments: 
+Partial assignments:
+ 
