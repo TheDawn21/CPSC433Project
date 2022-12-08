@@ -28,7 +28,7 @@ CSMA U13T3 DIV 02
 CUSA O18T1 DIV 01 
 CSMA U17T1 DIV 01 
 
-Practices:  
+Practices: 
 
 Not compatible: 
 
