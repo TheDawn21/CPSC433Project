@@ -8,6 +8,7 @@ public class TestEval {
         Event game3 = new Event("game3", "CMSA", "U19", "T1", 1, true, "game3");
         Event game4 = new Event("game4", "CMSA", "U16", "T1", 0, true, "game4");
         Event prac1 = new Event("prac1", "CMSA", "U13", "T1", 2, false, "prac1");
+        Event prac2 = new Event("prac2", "CMSA", "U13", "T1", 1, false, "prac2");
         Slot gSlot1 = new Slot("MO", 1800, 1900, 0, 0, false, "gSlot1");
         Slot gSlot2 = new Slot("TU", 1100, 1230, 1, 0, false, "gSlot2");
         Slot gSlot3 = new Slot("TU", 1830, 2000, 1, 0, false, "gSlot3");
