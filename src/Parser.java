@@ -198,8 +198,8 @@ public class Parser {
                     event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        System.out.println("Event does not exist in possible Events, skipping");
-                        System.exit(0);
+                        //System.out.println("Event does not exist in possible Events, skipping");
+                        //System.exit(0);
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(ncMap.get(event1) == null) {
@@ -244,8 +244,8 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
-                        System.out.println("Event or slot does not exist in possible unwanted, skipping");
-                        System.exit(0); // exit behaviour for now
+                        //System.out.println("Event or slot does not exist in possible unwanted, skipping");
+                        //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Slot
                     if(unwantMap.get(event) == null) {
@@ -282,8 +282,8 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the entries does not exist
                     if(event == null || slot == null) {
-                        System.out.println("Event or slot does not exist, skipping");
-                        System.exit(0); // exit behaviour for now
+                        //System.out.println("Event or slot does not exist, skipping");
+                        //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Object[2](slot,prefVal)
                     if(preferMap.get(event) == null) {
@@ -323,8 +323,8 @@ public class Parser {
                     event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        System.out.println("Event does not exist in possible Events, skipping");
-                        System.exit(0); // exit behaviour for now
+                        //System.out.println("Event does not exist in possible Events, skipping");
+                        //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(pairMap.get(event1) == null) {
@@ -368,8 +368,8 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
-                        System.out.println("Event or slot does not exist in possible partial assignments, skipping");
-                        System.exit(0);
+                        //System.out.println("Event or slot does not exist in possible partial assignments, skipping");
+                        //System.exit(0);
                         //System.exit(0); Not exit behaviour for now
                     }
                     // Add hashmap entry for event -> Slot
@@ -406,11 +406,11 @@ public class Parser {
             }
         }
         // Null check
-        if(event == null) {
-            System.out.println("getEvent could not find a matching Event, exiting program");
-            System.out.println(identifier);
-            System.exit(0);
-        }
+        //if(event == null) {
+          //  System.out.println("getEvent could not find a matching Event, exiting program");
+          //  System.out.println(identifier);
+          //  System.exit(0);
+        //}
         return event;
     }
 
@@ -468,9 +468,9 @@ public class Parser {
                 }
             }
         }
-        System.out.println("Slot was not found in possible slots, exiting program");
-        System.out.println(slotDay);System.out.println(slotTime);
-        System.exit(0);
+        //System.out.println("Slot was not found in possible slots, exiting program");
+        //System.out.println(slotDay);System.out.println(slotTime);
+        //System.exit(0);
         Slot slot = null;// Will never be reached, only for compiler
         return slot;
     }

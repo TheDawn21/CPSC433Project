@@ -1,6 +1,14 @@
 import java.util.*;
 
 
+// Comparator, sorts Slots by decreasing min
+class SortByMin implements Comparator<Slot> {
+    public int compare(Slot a, Slot b) {
+        return b.min - a.min;
+    }
+}
+
+
 // Contains static methods that either evaluate a Schedule or evaluate
 // an assignment of an Event into a Schedule.
 public class Eval {
@@ -26,7 +34,6 @@ public class Eval {
     public ArrayList<Slot> sortedDecrPracMin;
     
 
-
     // Constructor
     public Eval(Parser input, int[] commandLineInputs) {
         this.input = input;
@@ -40,6 +47,22 @@ public class Eval {
         this.pensection = commandLineInputs[7];
 
         overlap = new HashMap<Slot, ArrayList<Slot>>();
+
+
+        // Sort slots by decreasing min
+        SortByMin slotSorter = new SortByMin();
+
+        sortedDecrGameMin = new ArrayList<>();
+        sortedDecrGameMin.addAll(input.m_game_slots);
+        sortedDecrGameMin.addAll(input.t_game_slots);
+        Collections.sort(sortedDecrGameMin, slotSorter);
+
+        ArrayList<Slot> sortedDecrPracMin = new ArrayList<>();
+        sortedDecrPracMin.addAll(input.m_prac_slots);
+        sortedDecrPracMin.addAll(input.t_prac_slots);
+        sortedDecrPracMin.addAll(input.f_prac_slots);
+        Collections.sort(sortedDecrPracMin, slotSorter);
+
 
         // Find game-practice overlaps
         ArrayList<Slot> mwf = input.m_game_slots;
@@ -135,8 +158,10 @@ public class Eval {
 
 
         // pair
-        //eval += calcPair(sched, e, s);
+        score += calcPair(sched, e, s) * wpair;
 
+        // preference
+        score += calcPref(e, s) * wpref;
         
         // Update score field in Schedule and return score
         sched.score = score;
@@ -153,6 +178,8 @@ public class Eval {
     // s: Slot in sched to assign e to
     //
     // Return: true if schedule is still valid after assignment, false otherwise
+    //
+    // *** Tested and working ***
     public boolean isValid(Schedule sched, Event e, Slot s) {
         // Go through all hard constraints, if any of them are broken set valid to false.
         boolean valid = true;
@@ -258,16 +285,18 @@ public class Eval {
         
         if (assigned.size() <= max) {
             return true;
-        } 
+        }
 
         return false;
     }
 
 
     // Returns true if e conflicts with another event of the same division in s
+    // *** Tested and working ***
     public boolean practiceIntersect(Schedule sched, Event e, Slot s) {
         boolean invalid = false;
         ArrayList<Slot> overlappingSlots;
+        HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
 
         // Check if slot is a key in overlap
         if (overlap.containsKey(s)) {
@@ -277,14 +306,21 @@ public class Eval {
         }
         
         for (int i = 0; i < overlappingSlots.size(); i++) {
-            HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
             Slot slot = overlappingSlots.get(i);
             ArrayList<Event> practices = assignment.get(slot);
 
             for (int j = 0; j < practices.size(); j++) {
-                if (e.sameDiv(practices.get(j))) {
+                Event prac = practices.get(j);
+                if (e.sameDiv(prac)) {
                     invalid = true;
                     break;
+                }
+                // Check non-compatibility between overlapping game and prac
+                if (input.ncMap.containsKey(e)) {
+                    if (input.ncMap.get(e).contains(prac)) {
+                        invalid = true;
+                        break;
+                    }
                 }
             }
         }
@@ -294,13 +330,26 @@ public class Eval {
 
 
     // Returns true if there is an event in s that is notcompatible with e
+    // *** Tested and working ***
     public boolean notCompatible(Schedule sched, Event e, Slot s) {
         boolean invalid = false;
 
+        // Check if other events in same slot are not compatible
         HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
-        ArrayList<Event> otherEvents = assignment.get(s);
+
+        ArrayList<Event> otherEvents;
+        if (assignment.containsKey(s)) {
+            otherEvents = assignment.get(s);
+        } else {
+            return false;
+        }
         
-        HashSet<Event> noncompatibleEvents = input.ncMap.get(e);
+        HashSet<Event> noncompatibleEvents;
+        if (input.ncMap.containsKey(e)) {
+            noncompatibleEvents = input.ncMap.get(e);
+        } else {
+            return false;
+        }
         
         for (int i = 0; i < otherEvents.size(); i++) {
             Event other = otherEvents.get(i);
@@ -309,6 +358,7 @@ public class Eval {
                 break;
             }
         }
+
 
         return invalid;
     }
@@ -385,12 +435,18 @@ public class Eval {
 
 
     // Returns true if there are 2 games in age level U15/U16/U17/U18/U19 that overlap
+    // *** Tested and working ***
     public boolean ageOverlap(Schedule sched, Event e, Slot s) {
         boolean invalid = false;
 
         if (inAgeRange(e)) {
             HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
-            ArrayList<Event> otherGames = assignment.get(s);
+            ArrayList<Event> otherGames;
+            if (assignment.containsKey(s)) {
+                otherGames = assignment.get(s);
+            } else {
+                return false;
+            }
 
             for (int i = 0; i < otherGames.size(); i++) {
                 Event game = otherGames.get(i);
@@ -422,7 +478,7 @@ public class Eval {
 
 
     // Returns true if e is a game and s is Tuesday 1100 - 1230
-    // *** Tested and working
+    // *** Tested and working ***
     public boolean gameTuesday11(Event e, Slot s) {
         boolean invalid = false;
 
@@ -447,10 +503,18 @@ public class Eval {
         int penalties = sched.minPenalties;
 
         // Assign e and calculate new min penalty
-        if (e.type == true) { // assign game
-            // check if putting event in slot reduces the penalty
-            ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
-            int numAssigned = assignedEvents.size();
+        if (e.type == true) { 
+            // assign game
+
+            int numAssigned;
+            if (sched.eventsMap.containsKey(s)) {
+                ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
+                numAssigned = assignedEvents.size();
+            } else {
+                numAssigned = 0;
+            }
+
+            
             if (numAssigned < s.min) {
                 penalties -= 1;
             }
@@ -487,10 +551,18 @@ public class Eval {
             // Update penalty counter for schedule
             sched.minPenalties = penalties;
             
-        } else { // assign practice
-            // check if putting event in slot reduces the penalty
-            ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
-            int numAssigned = assignedEvents.size();
+        } else { 
+            // assign practice
+            
+            int numAssigned;
+            if (sched.eventsMap.containsKey(s)) {
+                ArrayList<Event> assignedEvents = sched.eventsMap.get(s);
+                numAssigned = assignedEvents.size();
+            } else {
+                numAssigned = 0;
+            }
+
+    
             if (numAssigned < s.min) {
                 penalties -= 1;
             }
@@ -538,7 +610,13 @@ public class Eval {
     public int calcSection(Schedule sched, Event e, Slot s) {
         int sectionPenalties = 0;
 
-        ArrayList<Event> assignedGames = sched.eventsMap.get(s);
+        ArrayList<Event> assignedGames;
+        if (sched.eventsMap.containsKey(s)) {
+            assignedGames = sched.eventsMap.get(s);
+        } else {
+            return 0;
+        }
+       
         for (int i = 0; i < assignedGames.size(); i ++) {
             Event otherGame = assignedGames.get(i);
             if (otherGame.age.equals(e.age) && otherGame.tier.equals(e.tier))
@@ -552,7 +630,14 @@ public class Eval {
     // Returns additional pair penalty
     public int calcPair(Schedule sched, Event e, Slot s) {
         int pairPen = 0;
-        ArrayList<Event> pairList = input.pairMap.get(e);
+
+        ArrayList<Event> pairList;
+        if (input.pairMap.containsKey(e)) {
+            pairList = input.pairMap.get(e);
+        } else {
+            return 0;
+        }
+        
         // For every event in pair list, check if event is assigned and two events are not in the same slot, then add pen, else 0
         for (Event event : pairList) {
             if (sched.slotsMap.containsKey(event) && sched.slotsMap.get(event) != s) {
@@ -562,11 +647,28 @@ public class Eval {
         return pairPen;
     }
 
-    // Returns additional preferences penalty
-    // public int caclPref(Schedule sched, Event e, Slot s) {
-    //     if (input.preferMap.get(e) != s) {
+    //Returns additional preferences penalty
+    public int calcPref(Event e, Slot s) {
+        int penalty = 0;
 
-    //     }
-    //     return 0;
-    // }
+        ArrayList<Object[]> preferences;
+        if (input.preferMap.containsKey(e)) {
+            preferences = input.preferMap.get(e);
+        } else {
+            return 0;
+        }
+
+        for (int i = 0; i < preferences.size(); i++) {
+            Object[] slot_value = preferences.get(i);
+            Object slotObj = slot_value[0];
+            Slot slot = (Slot)slotObj;
+            int value = (int)slot_value[1];
+
+            if (slot != s) {
+                penalty += value;
+            }
+        }
+
+        return penalty;
+    }
 }

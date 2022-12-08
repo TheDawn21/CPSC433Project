@@ -38,6 +38,10 @@ public class Schedule {
         this.eventsMap = new HashMap<>(sched.eventsMap);
         this.slotsMap = new HashMap<>(sched.slotsMap);
         this.score = sched.score;
+
+        this.gameIndex = sched.gameIndex;
+        this.pracIndex = sched.pracIndex;
+        this.minPenalties = sched.minPenalties;
     }
 
 }
