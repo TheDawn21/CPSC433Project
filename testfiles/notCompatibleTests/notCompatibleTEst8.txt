@@ -20,7 +20,7 @@ CSMA U13T3 DIV 02 OPN 02
 Not compatible: 
 CSMA U13T3 DIV 02, CSMA U13T3 DIV 01
 
-Unwanted:  
+Unwanted: 
 
 Preferences: 
 

@@ -25,10 +25,10 @@ FR, 10:00, 2, 1
 Games: 
 CSMA U13T3 DIV 01 
 CSMA U13T3 DIV 02 
-CUSA O18 DIV 01 
+CUSA O18T1 DIV 01 
 CSMA U17T1 DIV 01 
 
-Practices:  
+Practices: 
 
 Not compatible: 
 
