@@ -405,9 +405,9 @@ public class Parser {
                     event = practices.get(j);
                 }
                 // Search for a substitutable PRC or OPN
-                else if(substitutePrcOpn(pracName).equals(identifier.trim())) {
-                    event = practices.get(j);
-                }
+                //else if(substitutePrcOpn(pracName).equals(identifier.trim())) {
+                //    event = practices.get(j);
+                //}
             }
         }
         else {
