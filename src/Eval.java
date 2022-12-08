@@ -637,11 +637,23 @@ public class Eval {
         } else {
             return 0;
         }
+
+        ArrayList<Slot> overlappedSlots;
+        if (overlap.containsKey(s)) {
+            overlappedSlots = overlap.get(s);
+        } else {
+            overlappedSlots = new ArrayList<>();
+        }
+        HashSet<Slot> overlapSet = new HashSet<>(overlappedSlots);
         
         // For every event in pair list, check if event is assigned and two events are not in the same slot, then add pen, else 0
         for (Event event : pairList) {
-            if (sched.slotsMap.containsKey(event) && sched.slotsMap.get(event) != s) {
-                pairPen += pennotpaired;
+            if (e.type == event.type) {
+                if (sched.slotsMap.containsKey(event) && sched.slotsMap.get(event) != s) 
+                    pairPen += pennotpaired; 
+            } else {
+                if (sched.slotsMap.containsKey(event) && !(overlapSet.contains(sched.slotsMap.get(event)))) 
+                        pairPen += pennotpaired;
             }
         }
         return pairPen;
