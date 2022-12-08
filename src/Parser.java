@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /*
  * Refactoring TODO
@@ -96,7 +95,7 @@ public class Parser {
     public void fillList(String buff) {
         String[] lines = buff.split("\n");
         if(lines.length <= 1) return;
-        System.out.println(buff);
+        // System.out.println(buff);
         String header = lines[0].toLowerCase().trim();
         // Switch based on the section head in the file, lowercase only
         switch(header){
@@ -153,8 +152,10 @@ public class Parser {
                     int divFinal = Integer.parseInt(slotInfo[3]); // Should always be here
                     // Dealing with the type of event
                     boolean pracOrGame = true; // game by default
+                    // Create id for game
+                    String id = "game" + i; 
                     // Add the final game
-                    games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
+                    games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
                 }
                 break;
             case "practices:":
@@ -176,8 +177,10 @@ public class Parser {
                     int divFinal = Integer.parseInt(div);
                     // Dealing with the type of event
                     boolean pracOrGame = false; // prac is false
+                    // create id for practice
+                    String id = "prac" + i;
                     // Add the final practice
-                    practices.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame));
+                    practices.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
                 }
                 break;
             case "not compatible:":
@@ -228,7 +231,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 3) {
                         System.out.println("Unwanted does not have 3 items, skipping line");
-                        System.exit(0); // Make sure there are an event, slot day, and slot time
+                        // System.exit(0); // Make sure there are an event, slot day, and slot time
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -265,7 +268,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 4) {
                         System.out.println("Preference does not have 4 entries, skipping line");
-                        System.exit(0); // Make sure there are two events
+                        // System.exit(0); // Make sure there are two events
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -352,7 +355,7 @@ public class Parser {
                     String[] slotInfo = lines[i].split(",");
                     if(slotInfo.length != 3) {
                         System.out.println("Partial Assignments does not have 3 items, skipping line");
-                        System.exit(0); // Make sure there are an event, slot day, and slot time
+                        // System.exit(0); // Make sure there are an event, slot day, and slot time
                     }
                     trimInput(slotInfo); // Get rid of whitespace
                     boolean isPractice = false;
@@ -501,25 +504,26 @@ public class Parser {
         int max = Integer.parseInt(slotInfo[2]); 
         int min = Integer.parseInt(slotInfo[3]); 
         boolean special = false; 
+        String idName = "(" + day + "," + startTime + ")";
         if(isPractice) {
             if(dayCode == MONDAY) {
                 int endTime = startTime + 100; // Add in an hour          
-                m_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+                m_prac_slots.add(new Slot(day, startTime, endTime, max, min, special, idName));
             }
             else if(dayCode == TUESDAY) {
-                if(startTime == 1800) special = true; // Special showcase games/practices
+                if(startTime == 1800) special = true; // Special showcase practice
                 int endTime = startTime + 100; // Add in an hour    
-                t_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+                t_prac_slots.add(new Slot(day, startTime, endTime, max, min, special, idName));
             }
             else if(dayCode == FRIDAY) {
                 int endTime = startTime + 200; // Add in two hours    
-                f_prac_slots.add(new Slot(day, startTime, endTime, max, min, special));
+                f_prac_slots.add(new Slot(day, startTime, endTime, max, min, special, idName));
             }
         }
         else {
             if(dayCode == MONDAY) {
                 int endTime = startTime + 100; // Add in an hour          
-                m_game_slots.add(new Slot(day, startTime, endTime, max, min, special));
+                m_game_slots.add(new Slot(day, startTime, endTime, max, min, special, idName));
             }
             else if(dayCode == TUESDAY) {
                 if(startTime == 1100) special = true; // Special league-wide meeting at 11
@@ -528,7 +532,7 @@ public class Parser {
                 int minutes = Integer.parseInt(slotInfo[1].substring(Math.max(slotInfo[1].length()-2, 0)));
                 if(minutes == 30) endTime = startTime + 200 - 30; // Add in an hour and a half to 30 min
                 else endTime = startTime + 100 + 30; // Add in an hour and a half to flat hour
-                t_game_slots.add(new Slot(day, startTime, endTime, max, min, special));
+                t_game_slots.add(new Slot(day, startTime, endTime, max, min, special, idName));
             }
         }
     }
@@ -556,10 +560,11 @@ public class Parser {
             ageTier[0] = ageAndTier.substring(0, 3);
             ageTier[1] = ageAndTier.substring(3); // Can contain special S charcter
         }
-        if(ageTier[0] == null || ageTier[1] == null) {
-            System.out.println("Age and Tier was null, exiting");
-            System.exit(0);
-        }
+        // terminate if either age or tier are null , commented out for now, assumption is to assign T0
+        // if(ageTier[0] == null || ageTier[1] == null) {
+        //     System.out.println("Age and Tier was null, exiting");
+        //     System.exit(0);
+        // }
         return ageTier;
     }
 

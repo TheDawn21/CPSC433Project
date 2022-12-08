@@ -6,15 +6,18 @@ public class Event {
     public String tier;
     public int div;
     public boolean type; // game = true | practice = false
+    // id such as game1, so it's easier to debug
+    public String id;
 
     // Constructor
-    public Event(String name , String org, String age, String tier, int div, boolean type) {
+    public Event(String name , String org, String age, String tier, int div, boolean type, String id) {
         this.name = name;
         this.org = org;
         this.age = age;
         this.tier = tier;
         this.div = div;
         this.type = type;
+        this.id = id;
     }
 
     

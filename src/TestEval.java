@@ -3,18 +3,17 @@ import java.util.*;
 // For testing Eval
 public class TestEval {
     public static void main(String[] args) {
-        Event game1 = new Event("game1", "CMSA", "U10", "T1", 1, true);
-        Event game2 = new Event("game2", "CMSA", "U19", "T1", 9, true);
-        Event game3 = new Event("game3", "CMSA", "U19", "T1", 1, true);
-        Event game4 = new Event("game4", "CMSA", "U17", "T1", 0, true);
-        Event prac1 = new Event("prac1", "CMSA", "U14", "T1", 1, false);
-        Event prac2 = new Event("prac2", "CMSA", "U14", "T1", 1, false);
-        Slot gSlot1 = new Slot("MO", 1100, 1200, 0, 0, false);
-        Slot gSlot2 = new Slot("TU", 1100, 1230, 1, 0, false);
-        Slot gSlot3 = new Slot("TU", 1230, 1400, 1, 0, false);
-        Slot pSlot1 = new Slot("TU", 1100, 1200, 2, 0, false);
-        Slot pSlot2 = new Slot("TU", 1200, 1300, 2, 0, false);
-        Slot specialSlot = new Slot("TU", 1800, 1900, 2, 0, true);
+        Event game1 = new Event("game1", "CMSA", "U12", "T1", 1, true, "game1");
+        Event game2 = new Event("game2", "CMSA", "U15", "T1", 9, true, "game2");
+        Event game3 = new Event("game3", "CMSA", "U19", "T1", 1, true, "game3");
+        Event game4 = new Event("game4", "CMSA", "U16", "T1", 0, true, "game4");
+        Event prac1 = new Event("prac1", "CMSA", "U13", "T1", 2, false, "prac1");
+        Slot gSlot1 = new Slot("MO", 1800, 1900, 0, 0, false, "gSlot1");
+        Slot gSlot2 = new Slot("TU", 1100, 1230, 1, 0, false, "gSlot2");
+        Slot gSlot3 = new Slot("TU", 1830, 2000, 1, 0, false, "gSlot3");
+        Slot pSlot1 = new Slot("TU", 900, 1000, 2, 0, false, "pSlot1");
+        Slot pSlot2 = new Slot("TU", 1000, 1100, 2, 0, false, "pSlot2");
+        Slot specialSlot = new Slot("TU", 1800, 1900, 2, 0, true, "special");
         ArrayList<Slot> gSlots = new ArrayList<>(Arrays.asList(gSlot1, gSlot2, gSlot3));
         ArrayList<Slot> pSlots = new ArrayList<>(Arrays.asList(pSlot1, pSlot2, specialSlot));
         ArrayList<Event> games = new ArrayList<>(Arrays.asList(game1, game2, game3, game4));
