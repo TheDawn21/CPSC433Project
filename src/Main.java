@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Main {
@@ -64,20 +64,62 @@ public class Main {
         
         System.out.println("\nNot Compatible");
         for (Event key : p.ncMap.keySet()) {
-            printEvent(key);
-            System.out.print(" -> ");
+            if (key == null) System.out.print("null -> ");
+            else System.out.print(key.id + " -> ");
             HashSet<Event> hs = p.ncMap.get(key);
-            System.out.println(Arrays.toString(hs.toArray()));
+            System.out.print("[");
+            hs.forEach((e) -> System.out.print(e.id + ", "));
+            System.out.println("]");
         }
         
-        // System.out.println(p.ncMap);
-        // System.out.println(p.unwantMap);
-        // System.out.println(p.preferMap);
-        // System.out.println(p.pairMap);
-        // System.out.println(p.paMap);
+        System.out.println("\nUnwanted");
+        for (Event key : p.unwantMap.keySet()) {
+            if (key == null) System.out.print("null -> ");
+            else System.out.print(key.id + " -> ");
+            HashSet<Slot> hs = p.unwantMap.get(key);
+            System.out.print("[");
+            hs.forEach((e) -> System.out.print(e.idName + ", "));
+            System.out.println("]");
+        }
+        
+        System.out.println("\nPreferences");
+        for (Event key : p.preferMap.keySet()) {
+            if (key == null) System.out.print("null -> ");
+            else System.out.print(key.id + " -> ");
+            ArrayList<Object[]> arr = p.preferMap.get(key);
+            arr.forEach((e) -> {
+                System.out.print("[");
+                Slot s = (Slot) e[0];
+                if (s == null) System.out.print("null,");
+                else System.out.print(s.idName + ",");
+                System.out.print(e[1]);
+                System.out.print("] ");
+            }); 
+            System.out.println();
+        }
+
+        System.out.println("\nPairs");
+        for (Event key : p.pairMap.keySet()) {
+            if (key == null) System.out.print("null -> ");
+            else System.out.print(key.id + " -> ");
+            ArrayList<Event> arr = p.pairMap.get(key);
+            arr.forEach(e -> {
+                System.out.print("[");
+                System.out.print(e.id + ",");
+                System.out.println("]");
+            });
+        }
+
+        System.out.println("\nPart Assign");
+        for (Event key : p.paMap.keySet()) {
+            if (key == null) System.out.print("null -> ");
+            else System.out.print(key.id + " -> ");
+            System.out.println(p.paMap.get(key).idName);
+        }
     }
 
     private static void printSlot(Slot slot) {
+        System.out.print(slot.idName + " | ");
         System.out.print("Day: " + slot.day);
         System.out.print(", Start: " + slot.startTime); 
         System.out.print(", End: " + slot.endTime);
@@ -87,8 +129,8 @@ public class Main {
     }
 
     private static void printEvent(Event event) {
-        System.out.print(event.name);
-        System.out.print(event.org);
+        System.out.print(event.id);
+        System.out.print(" | " + event.org);
         System.out.print(" " + event.age); 
         System.out.print(" " + event.tier);
         System.out.print(" DIV" + event.div); 
