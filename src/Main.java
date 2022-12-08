@@ -12,7 +12,7 @@ public class Main {
                 }
                 Parser parseObj = new Parser(filename);
                 testParserOutput(parseObj);
-                TreeSearch aTree = new TreeSearch(parseObj);
+                TreeSearch aTree = new TreeSearch(parseObj, weights_penalties);
                 System.out.println(aTree.bestSched.score);
 
             } catch (NumberFormatException e) {
