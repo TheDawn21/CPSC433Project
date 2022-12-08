@@ -201,8 +201,9 @@ public class Parser {
                     event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        //System.out.println("Event does not exist in possible Events, skipping");
-                        //System.exit(0);
+                        System.out.println("Event does not exist in possible Events, skipping");
+                        System.out.println(eventName1); System.out.println(eventName2);
+                        System.exit(0);
                     }
                     // Add hashmap entry for event 1 -> event 2
                     if(ncMap.get(event1) == null) {
@@ -247,7 +248,8 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
-                        //System.out.println("Event or slot does not exist in possible unwanted, skipping");
+                        System.out.println("Event or slot does not exist in possible unwanted, skipping");
+                        continue;
                         //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Slot
@@ -285,7 +287,9 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the entries does not exist
                     if(event == null || slot == null) {
-                        //System.out.println("Event or slot does not exist, skipping");
+                        System.out.println("Event or slot does not exist for preference, skipping");
+                        System.out.println(eventName); System.out.println(slotDay); System.out.println(slotTime); 
+                        continue;
                         //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event -> Object[2](slot,prefVal)
@@ -326,7 +330,8 @@ public class Parser {
                     event2 = getEvent(isPractice, eventName2);
                     // Check for if one of the events does not exist in games/practices
                     if(event1 == null || event2 == null) {
-                        //System.out.println("Event does not exist in possible Events, skipping");
+                        System.out.println("Event does not exist in possible Events, skipping");
+                        continue;
                         //System.exit(0); // exit behaviour for now
                     }
                     // Add hashmap entry for event 1 -> event 2
@@ -371,7 +376,8 @@ public class Parser {
                     slot = getSlot(isPractice, slotDay, slotTime);
                     // Check for if one of the events does not exist in games/practices
                     if(event == null || slot == null) {
-                        //System.out.println("Event or slot does not exist in possible partial assignments, skipping");
+                        System.out.println("Event or slot does not exist in possible partial assignments, skipping");
+                        continue;
                         //System.exit(0);
                         //System.exit(0); Not exit behaviour for now
                     }
@@ -396,6 +402,10 @@ public class Parser {
             for(int j = 0; j < practices.size(); j++) {
                 String pracName = practices.get(j).name.trim();
                 if(pracName.equals(identifier.trim()) ) {
+                    event = practices.get(j);
+                }
+                // Search for a substitutable PRC or OPN
+                else if(substitutePrcOpn(pracName).equals(identifier.trim())) {
                     event = practices.get(j);
                 }
             }
@@ -566,6 +576,27 @@ public class Parser {
         //     System.exit(0);
         // }
         return ageTier;
+    }
+
+    /*
+     * Method to swap out the PRC and OPN tags for one another for searching purposes
+     */
+    public String substitutePrcOpn(String s) {
+        String retString = "";
+        if(s.length() <= 1) System.out.println("Something is wrong with the string size, too low");
+        String[] pracInfo = s.split(" ");
+        for(int i = 0; i < pracInfo.length; i++) {
+            if(pracInfo[i].trim().equals("PRC")) {
+                retString = retString + "OPN "; // Space is important
+            }
+            else if(pracInfo[i].trim().equals("OPN")) {
+                retString = retString + "PRC "; // Space is important
+            }
+            else {
+                retString = retString + pracInfo[i].trim() + " ";
+            }
+        }
+        return retString.trim();
     }
 
 }
