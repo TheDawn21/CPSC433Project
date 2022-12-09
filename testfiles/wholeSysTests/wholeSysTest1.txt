@@ -24,7 +24,7 @@ CMSA U13T1 DIV 01, CMSA U17T1 PRC 01
 Unwanted: 
 
 Preferences: 
-MO, 8:00, CMSA U13T3 DIV 01, 10 
+MO, 8:00, CMSA U13T1 DIV 01, 10 
 
 Pair: 
 
