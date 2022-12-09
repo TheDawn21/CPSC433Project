@@ -82,7 +82,11 @@ public class TreeSearch {
     private void partAssign(Schedule sched) {
         path+= "Part Assign\n";
         input.paMap.forEach((event, slot) ->  {
-            assign(sched, event, slot);
+            Boolean valid = assign(sched, event, slot);
+            if (!valid) {
+                System.out.println("Cannot assign Part Assign!");
+                System.exit(0);
+            }
         });
     }
 
