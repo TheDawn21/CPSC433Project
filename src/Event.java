@@ -24,6 +24,7 @@ public class Event {
     // Check if another Event is in the same division
     // Used in Eval.practiceIntersect()
     public boolean sameDiv(Event event) {
+
         boolean same = false;
 
         if (this.org.equals(event.org)) {
@@ -31,6 +32,11 @@ public class Event {
                 if (this.tier.equals(event.tier)) {
                     if (this.div == event.div)
                         same = true;
+
+                    // for practice without div
+                    if (this.div == 0 || event.div == 0) {
+                        same = true;
+                    }
                 }
             }
         }

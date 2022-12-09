@@ -294,6 +294,7 @@ public class Eval {
     // Returns true if e conflicts with another event of the same division in s
     // *** Tested and working ***
     public boolean practiceIntersect(Schedule sched, Event e, Slot s) {
+
         boolean invalid = false;
         ArrayList<Slot> overlappingSlots;
         HashMap<Slot, ArrayList<Event>> assignment = sched.eventsMap;
