@@ -3,7 +3,7 @@ Name:
 test2
 
 Game slots:
-MO, 8:00, 4, 2
+WE, 8:00, 4, 2
 
 Practice slots: 
 MO, 8:00, 4, 2 
