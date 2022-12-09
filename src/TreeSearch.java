@@ -75,7 +75,11 @@ public class TreeSearch {
         }
 
         for (Event e : input.specialEvents) {
-            assign(sched, e, specialSlot);
+            Boolean valid = assign(sched, e, specialSlot);
+            if (!valid) {
+                System.out.println("Cannot assign Special Event!");
+                System.exit(0);
+            }
         }
     }
     
