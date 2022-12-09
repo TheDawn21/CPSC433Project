@@ -36,7 +36,7 @@ public class Parser {
     // Hashmaps
     HashMap<Event, HashSet<Event>> ncMap = new HashMap<Event, HashSet<Event>>();// = new HashMap<Event, ArrayList<Event>>();
     HashMap<Event, HashSet<Slot>> unwantMap = new HashMap<Event, HashSet<Slot>>();
-    HashMap<Event, ArrayList<Object[]>> preferMap = new HashMap<Event, ArrayList<Object[]>>();
+    HashMap<Event, ArrayList<Prefered>> preferMap = new HashMap<Event, ArrayList<Prefered>>();
     HashMap<Event, ArrayList<Event>> pairMap = new HashMap<Event, ArrayList<Event>>();
     HashMap<Event, Slot> paMap = new HashMap<Event, Slot>();
 
@@ -305,17 +305,22 @@ public class Parser {
                     }
                     // Add hashmap entry for event -> Object[2](slot,prefVal)
                     if(preferMap.get(event) == null) {
-                        ArrayList<Object[]> mapVal = new ArrayList<Object[]>();
-                        Object[] slotAndPref = new Object[2];
-                        slotAndPref[0] = slot;
-                        slotAndPref[1] = prefVal;
+                        //ArrayList<Object[]> mapVal = new ArrayList<Object[]>();
+                        ArrayList<Prefered> mapVal = new ArrayList<Prefered>();
+                        //Object[] slotAndPref = new Object[2];
+                        Prefered slotAndPref = new Prefered();
+                        slotAndPref.event = event; slotAndPref.prefValue = prefVal; slotAndPref.slot = slot;
+                        //slotAndPref[0] = slot;
+                        //slotAndPref[1] = prefVal;
                         mapVal.add(slotAndPref);
                         preferMap.put(event, mapVal);
                     }
                     else {
-                        Object[] slotAndPref = new Object[2];
-                        slotAndPref[0] = slot;
-                        slotAndPref[1] = prefVal;
+                        //Object[] slotAndPref = new Object[2];
+                        Prefered slotAndPref = new Prefered();
+                        slotAndPref.event = event; slotAndPref.prefValue = prefVal; slotAndPref.slot = slot;
+                        //slotAndPref[0] = slot;
+                        //slotAndPref[1] = prefVal;
                         preferMap.get(event).add(slotAndPref);
                     }
                 }
