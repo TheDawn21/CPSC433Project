@@ -669,7 +669,7 @@ public class Eval {
     public int calcPref(Event e, Slot s) {
         int penalty = 0;
 
-        ArrayList<Object[]> preferences;
+        ArrayList<Prefered> preferences;
         if (input.preferMap.containsKey(e)) {
             preferences = input.preferMap.get(e);
         } else {
