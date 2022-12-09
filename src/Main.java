@@ -28,9 +28,11 @@ public class Main {
     }
 
     public static void printSched (Schedule sched) {
-        sched.slotsMap.forEach((event, slot) -> {
-            System.out.printf("%-30.30s  %-30.30s%n", event.name, slot.idName);
-        });
+        if(sched.slotsMap != null){
+            sched.slotsMap.forEach((event, slot) -> {
+                System.out.printf("%-30.30s  %-30.30s%n", event.name, slot.idName);
+            });
+        }
     }
 
     public static void testParserOutput(Parser p) {

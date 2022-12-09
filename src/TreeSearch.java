@@ -73,6 +73,7 @@ public class TreeSearch {
             if (s.isSpecial)
                 specialSlot = s;
         }
+        System.out.println("Cannot find special slot!");
 
         for (Event e : input.specialEvents) {
             Boolean valid = assign(sched, e, specialSlot);
