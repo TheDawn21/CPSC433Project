@@ -32,6 +32,7 @@ public class Parser {
     ArrayList<Slot> f_prac_slots = new ArrayList<>();
     ArrayList<Event> games  = new ArrayList<>();
     ArrayList<Event> practices = new ArrayList<>();
+    ArrayList<Event> specialEvents = new ArrayList<>();
     // Hashmaps
     HashMap<Event, HashSet<Event>> ncMap = new HashMap<Event, HashSet<Event>>();// = new HashMap<Event, ArrayList<Event>>();
     HashMap<Event, HashSet<Slot>> unwantMap = new HashMap<Event, HashSet<Slot>>();
@@ -154,6 +155,12 @@ public class Parser {
                     boolean pracOrGame = true; // game by default
                     // Create id for game
                     String id = "game" + i; 
+                    boolean isCMSA = slotInfo[0].trim().equals("CMSA");
+                    boolean ageIs12or13 = age.trim().equals("U12") || age.trim().equals("U13");
+                    boolean tierIs1 = tier.trim().equals("T1");
+                    if(isCMSA && ageIs12or13 && tierIs1) {
+                        specialEvents.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
+                    }
                     // Add the final game
                     games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
                 }

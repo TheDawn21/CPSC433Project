@@ -57,24 +57,40 @@ public class TreeSearch {
         
 
         // for (Slot slot: sched.eventsMap.keySet()) {
-        //     String key = slot.day;
+        //     String key = slot.idName;
         //     ArrayList<Event> value = sched.eventsMap.get(slot);
         //     System.out.print(key + ": [");
-        //     value.forEach(event-> System.out.print(event.name + ", "));
+        //     value.forEach(event-> System.out.print(event.id + ", "));
         //     System.out.println("]");
         // }
-        // System.out.println(path);
+        System.out.println(path);
     }
 
     private void specialAssign(Schedule sched) {
-        // TODO implement specialAssign
+        path+= "Special Assign\n";
+        Slot specialSlot = null;
+        for (Slot s : input.t_prac_slots) {
+            if (s.isSpecial)
+                specialSlot = s;
+        }
 
+        for (Event e : input.specialEvents) {
+            Boolean valid = assign(sched, e, specialSlot);
+            if (!valid) {
+                System.out.println("Cannot assign Special Event!");
+                System.exit(0);
+            }
+        }
     }
     
     private void partAssign(Schedule sched) {
         path+= "Part Assign\n";
         input.paMap.forEach((event, slot) ->  {
-            assign(sched, event, slot);
+            Boolean valid = assign(sched, event, slot);
+            if (!valid) {
+                System.out.println("Cannot assign Part Assign!");
+                System.exit(0);
+            }
         });
     }
 
@@ -122,11 +138,11 @@ public class TreeSearch {
             else sched.pracsLeft.remove(event);
             
             // update path
-            path += "Event: " + event.name + ", Slot: " + slot.day + ", IsValid: true, Score: " + sched.score + "\n";
+            path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: true, Score: " + sched.score + "\n";
 
             return true;
         }
-        else path += "Event: " + event.name + ", Slot: " + slot.day + ", IsValid: false\n";
+        else path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: false\n";
 
         return false;
     }

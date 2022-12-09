@@ -307,7 +307,9 @@ public class Eval {
         
         for (int i = 0; i < overlappingSlots.size(); i++) {
             Slot slot = overlappingSlots.get(i);
+            
             ArrayList<Event> practices = assignment.get(slot);
+            if (practices == null) continue;
 
             for (int j = 0; j < practices.size(); j++) {
                 Event prac = practices.get(j);
