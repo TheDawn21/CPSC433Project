@@ -14,7 +14,7 @@ public class Main {
                 Parser parseObj = new Parser(filename);
                 testParserOutput(parseObj);
                 TreeSearch aTree = new TreeSearch(parseObj, weights_penalties);
-                System.out.println(aTree.bestSched.score);
+                System.out.println("Eval: " + aTree.bestSched.score);
 
             } catch (NumberFormatException e) {
                 System.err.println("Argument error: " + e.getLocalizedMessage());
@@ -116,6 +116,7 @@ public class Main {
             else System.out.print(key.id + " -> ");
             System.out.println(p.paMap.get(key).idName);
         }
+        System.out.println();
     }
 
     private static void printSlot(Slot slot) {

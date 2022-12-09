@@ -57,18 +57,29 @@ public class TreeSearch {
         
 
         // for (Slot slot: sched.eventsMap.keySet()) {
-        //     String key = slot.day;
+        //     String key = slot.idName;
         //     ArrayList<Event> value = sched.eventsMap.get(slot);
         //     System.out.print(key + ": [");
-        //     value.forEach(event-> System.out.print(event.name + ", "));
+        //     value.forEach(event-> System.out.print(event.id + ", "));
         //     System.out.println("]");
         // }
-        // System.out.println(path);
+        System.out.println(path);
     }
 
     private void specialAssign(Schedule sched) {
-        // TODO implement specialAssign
+        // Slot specialSlot = null;
+        // for (Slot s : input.t_prac_slots) {
+        //     if (s.isSpecial)
+        //         specialSlot = s;
+        // }
 
+        // ArrayList<Event> specialEvent = new ArrayList<>();
+        // for (Event e : input.practices) {
+        //     if (e.)
+        // }
+
+        // // TODO implement specialAssign
+        // path+= "Special Assign\n";
     }
     
     private void partAssign(Schedule sched) {
@@ -122,11 +133,11 @@ public class TreeSearch {
             else sched.pracsLeft.remove(event);
             
             // update path
-            path += "Event: " + event.name + ", Slot: " + slot.day + ", IsValid: true, Score: " + sched.score + "\n";
+            path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: true, Score: " + sched.score + "\n";
 
             return true;
         }
-        else path += "Event: " + event.name + ", Slot: " + slot.day + ", IsValid: false\n";
+        else path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: false\n";
 
         return false;
     }
