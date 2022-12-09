@@ -391,7 +391,7 @@ public class Eval {
     public boolean div9Early(Event e, Slot s) {
         boolean invalid = false;
 
-        if (e.div == 9) {
+        if (e.div >= 90 && e.div < 100) {
             if (s.startTime < 1800) {
                 invalid = true;
             }

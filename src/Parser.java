@@ -159,7 +159,8 @@ public class Parser {
                     boolean ageIs12or13 = age.trim().equals("U12") || age.trim().equals("U13");
                     boolean tierIs1 = tier.trim().equals("T1");
                     if(isCMSA && ageIs12or13 && tierIs1) {
-                        specialEvents.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
+                        String name = lines[i] + "s";
+                        specialEvents.add(new Event(name, slotInfo[0], age, tier, divFinal, pracOrGame, id));
                     }
                     // Add the final game
                     games.add(new Event(lines[i], slotInfo[0], age, tier, divFinal, pracOrGame, id));
