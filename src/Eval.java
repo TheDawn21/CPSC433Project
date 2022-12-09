@@ -677,10 +677,9 @@ public class Eval {
         }
 
         for (int i = 0; i < preferences.size(); i++) {
-            Object[] slot_value = preferences.get(i);
-            Object slotObj = slot_value[0];
-            Slot slot = (Slot)slotObj;
-            int value = (int)slot_value[1];
+            Prefered prefered = preferences.get(i);
+            Slot slot = prefered.slot;
+            int value = prefered.prefValue;
 
             if (slot != s) {
                 penalty += value;
