@@ -57,7 +57,7 @@ public class Eval {
         sortedDecrGameMin.addAll(input.t_game_slots);
         Collections.sort(sortedDecrGameMin, slotSorter);
 
-        ArrayList<Slot> sortedDecrPracMin = new ArrayList<>();
+        sortedDecrPracMin = new ArrayList<>();
         sortedDecrPracMin.addAll(input.m_prac_slots);
         sortedDecrPracMin.addAll(input.t_prac_slots);
         sortedDecrPracMin.addAll(input.f_prac_slots);
@@ -280,10 +280,10 @@ public class Eval {
         if (assignment.containsKey(s)) {
             assigned = assignment.get(s);
         } else {
-            return (max > 0);
+            return (max < 1);
         }
         
-        if (assigned.size() <= max) {
+        if (assigned.size() >= max) {
             return true;
         }
 
