@@ -1,4 +1,4 @@
-//should have a eval = min(gamemin, pair)
+//pair and pref test should have a eval = min(gamemin, pair)
 Name: 
 test83
 
