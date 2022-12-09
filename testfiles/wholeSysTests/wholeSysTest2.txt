@@ -1,0 +1,32 @@
+//should have a eval = min(gamemin, pair)
+Name: 
+test83
+
+Game slots: 
+MO, 8:00, 2, 1
+TU, 9:30, 2, 0 
+
+Practice slots: 
+MO, 8:00, 2, 0 
+TU, 10:00, 2, 1 
+
+
+Games: 
+CMSA U14T1 DIV 01 
+CMSA U17T1 DIV 01 
+
+Practices: 
+CMSA U14T1 DIV 01 PRC 01 
+CMSA U17T1 PRC 01 
+
+Not compatible: 
+
+Unwanted: 
+
+Preferences: 
+TU, 9:30, CMSA U14T1 DIV 01, 10 
+
+Pair: 
+CMSA U14T1 DIV 01, CMSA U17T1 DIV 01 
+
+Partial assignments: 
