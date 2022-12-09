@@ -95,13 +95,14 @@ public class Main {
         for (Event key : p.preferMap.keySet()) {
             if (key == null) System.out.print("null -> ");
             else System.out.print(key.id + " -> ");
-            ArrayList<Object[]> arr = p.preferMap.get(key);
+            //ArrayList<Object[]> arr = p.preferMap.get(key);
+            ArrayList<Prefered> arr = p.preferMap.get(key);
             arr.forEach((e) -> {
                 System.out.print("[");
-                Slot s = (Slot) e[0];
+                Slot s = e.slot;
                 if (s == null) System.out.print("null,");
                 else System.out.print(s.idName + ",");
-                System.out.print(e[1]);
+                System.out.print(e.prefValue);
                 System.out.print("] ");
             }); 
             System.out.println();
