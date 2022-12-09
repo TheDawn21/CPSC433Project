@@ -159,8 +159,8 @@ public class Parser {
                     boolean ageIs12or13 = age.trim().equals("U12") || age.trim().equals("U13");
                     boolean tierIs1 = tier.trim().equals("T1");
                     if(isCMSA && ageIs12or13 && tierIs1) {
-                        tier = tier + "S";
-                        String name = slotInfo[0].trim() + " " + age + tier + " DIV " + divFinal;
+                        // tier = tier + "S";
+                        String name = slotInfo[0].trim() + " " + age + tier + "S" + " DIV " + divFinal;
                         Event e = new Event(name, slotInfo[0], age, tier, divFinal, false, id);
                         specialEvents.add(e);
                         practices.add(e);
