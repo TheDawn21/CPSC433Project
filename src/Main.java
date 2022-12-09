@@ -14,8 +14,14 @@ public class Main {
                 Parser parseObj = new Parser(filename);
                 testParserOutput(parseObj);
                 TreeSearch aTree = new TreeSearch(parseObj, weights_penalties);
-                System.out.println("Eval: " + aTree.bestSched.score);
-                printSched(aTree.bestSched);
+
+                if (aTree.bestSched.score == Integer.MAX_VALUE) {
+                    System.out.println("Cannot find valid solution");
+                } else {
+                    System.out.println("Eval: " + aTree.bestSched.score);
+                    printSched(aTree.bestSched);
+                }
+                
 
             } catch (NumberFormatException e) {
                 System.err.println("Argument error: " + e.getLocalizedMessage());

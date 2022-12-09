@@ -63,7 +63,7 @@ public class TreeSearch {
         //     value.forEach(event-> System.out.print(event.id + ", "));
         //     System.out.println("]");
         // }
-        //System.out.println(path);
+        System.out.println(path);
     }
 
     private void specialAssign(Schedule sched) {

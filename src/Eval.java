@@ -225,12 +225,22 @@ public class Eval {
             valid = false;
         }
 
+        else if (gameDuplicate(sched, e, s) == true) {
+            valid = false;
+        }  
+
 
         return valid;
     }
 
 
-
+    public boolean gameDuplicate(Schedule sched, Event e, Slot s) {
+        if (sched.slotsMap.containsKey(e)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
