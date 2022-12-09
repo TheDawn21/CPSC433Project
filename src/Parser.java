@@ -522,6 +522,28 @@ public class Parser {
     public void addSlot(boolean isPractice, String[] slotInfo, int dayCode) {
         String day = slotInfo[0];
         int startTime = Integer.parseInt(slotInfo[1].replace(":", ""));
+        boolean badTimeFlag = false;
+        if(startTime >= 800) {
+            if(day.trim().equals("MO") && startTime > 2000) {
+                badTimeFlag = true;
+            }
+            else if(!isPractice && day.trim().equals("TU") && startTime > 1830) {
+                badTimeFlag = true;
+            }
+            else if(isPractice && day.trim().equals("TU") && startTime > 2000) {
+                badTimeFlag = true;
+            }
+            else if(day.trim().equals("FR") && startTime > 1800) {
+                badTimeFlag = true;
+            }
+        }
+        else {
+            badTimeFlag = true;
+        }
+        if(badTimeFlag) {
+            System.out.println("The time given for slot was given out of bounds, exiting");
+            System.exit(0);
+        }
         int max = Integer.parseInt(slotInfo[2]); 
         int min = Integer.parseInt(slotInfo[3]); 
         boolean special = false; 
