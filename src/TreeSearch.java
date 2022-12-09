@@ -67,19 +67,16 @@ public class TreeSearch {
     }
 
     private void specialAssign(Schedule sched) {
-        // Slot specialSlot = null;
-        // for (Slot s : input.t_prac_slots) {
-        //     if (s.isSpecial)
-        //         specialSlot = s;
-        // }
+        path+= "Special Assign\n";
+        Slot specialSlot = null;
+        for (Slot s : input.t_prac_slots) {
+            if (s.isSpecial)
+                specialSlot = s;
+        }
 
-        // ArrayList<Event> specialEvent = new ArrayList<>();
-        // for (Event e : input.practices) {
-        //     if (e.)
-        // }
-
-        // // TODO implement specialAssign
-        // path+= "Special Assign\n";
+        for (Event e : input.specialEvents) {
+            assign(sched, e, specialSlot);
+        }
     }
     
     private void partAssign(Schedule sched) {
