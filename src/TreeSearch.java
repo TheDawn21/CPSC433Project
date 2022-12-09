@@ -73,6 +73,10 @@ public class TreeSearch {
             if (s.isSpecial)
                 specialSlot = s;
         }
+        if (input.specialEvents.size() != 0 && specialSlot == null) {
+            System.out.println("No special slot");
+            System.exit(0);
+        }
         if (specialSlot == null) return;
 
         for (Event e : input.specialEvents) {
