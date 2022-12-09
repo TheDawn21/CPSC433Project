@@ -117,6 +117,12 @@ public class Main {
             System.out.println(p.paMap.get(key).idName);
         }
         System.out.println();
+
+        System.out.println("\nSpecial Events");
+        for(Event ev : p.specialEvents) {
+            printEvent(ev);
+        }
+        System.out.println();
     }
 
     private static void printSlot(Slot slot) {
