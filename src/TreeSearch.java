@@ -107,7 +107,7 @@ public class TreeSearch {
             Event game = sched.gamesLeft.get(0);
             for (Slot gSlot : gSlots) {
                 Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, game, gSlot)) 
+                if (assign(schedCopy, game, gSlot) && (schedCopy.score < bestSched.score)) 
                     stack.add(schedCopy);
             }
         }
@@ -116,7 +116,7 @@ public class TreeSearch {
             Event prac = sched.pracsLeft.get(0);
             for (Slot pSlot : pSlots) {
                 Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, prac, pSlot)) 
+                if (assign(schedCopy, prac, pSlot) && (schedCopy.score < bestSched.score)) 
                     stack.add(schedCopy);
             }
         }
