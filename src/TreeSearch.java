@@ -121,10 +121,12 @@ public class TreeSearch {
             }
         }
         else {
-            bestSched = (bestSched.score > sched.score) ? sched : bestSched;
+            if (bestSched.score > sched.score) {
+                bestSched = sched;
+                System.out.println("Eval: " + bestSched.score);
+                printSched(bestSched);
+            }
             path += "Leaf\n";
-            System.out.println("Eval: " + bestSched.score);
-                    printSched(bestSched);
         }
     }  
 
