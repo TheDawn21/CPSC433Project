@@ -102,10 +102,12 @@ public class TreeSearch {
     private void eventsAssign(Schedule sched) {
         if (sched.gamesLeft.size() != 0) {
             path += "Expanding games\n";
+
+            
             Event game = sched.gamesLeft.get(0);
             for (Slot gSlot : gSlots) {
                 Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, game, gSlot) && schedCopy.score <= bestSched.score) 
+                if (assign(schedCopy, game, gSlot)) 
                     stack.add(schedCopy);
             }
         }
@@ -114,7 +116,7 @@ public class TreeSearch {
             Event prac = sched.pracsLeft.get(0);
             for (Slot pSlot : pSlots) {
                 Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, prac, pSlot) && schedCopy.score <= bestSched.score) 
+                if (assign(schedCopy, prac, pSlot)) 
                     stack.add(schedCopy);
             }
         }
@@ -126,6 +128,9 @@ public class TreeSearch {
 
     // return if assign isValid
     private Boolean assign(Schedule sched, Event event, Slot slot) {
+
+        
+
         if (eval.isValid(sched, event, slot)) {
             // calc score
             sched.score = eval.getPen(sched, event, slot);

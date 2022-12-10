@@ -35,8 +35,17 @@ public class Schedule {
     public Schedule (Schedule sched) {
         this.gamesLeft = new ArrayList<>(sched.gamesLeft);
         this.pracsLeft = new ArrayList<>(sched.pracsLeft);
+
+        // Bug fixed
         this.eventsMap = new HashMap<>(sched.eventsMap);
+        for (Slot slot : sched.eventsMap.keySet()) {
+            ArrayList<Event> eventsMapArray = sched.eventsMap.get(slot);
+            ArrayList<Event> copyArray = new ArrayList<>(eventsMapArray);
+            eventsMap.put(slot, copyArray);
+        }
+        
         this.slotsMap = new HashMap<>(sched.slotsMap);
+
         this.score = sched.score;
 
         this.gameIndex = sched.gameIndex;
