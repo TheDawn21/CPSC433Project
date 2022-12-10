@@ -20,11 +20,13 @@ public class Main {
                 Parser parseObj = new Parser(filename);
                // testParserOutput(parseObj);
 
+                TreeSearch aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
+
                 long msTime = 180000; //4 hour in MS
                 long doUntil = msTime + System.currentTimeMillis(); //1 minute
                 while(System.currentTimeMillis() != doUntil)
                 {
-                    TreeSearch aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
+                    aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
                 
                 }
 
@@ -32,12 +34,12 @@ public class Main {
 
                 
 
-                // if (aTree.bestSched.score == Integer.MAX_VALUE) {
-                //     System.out.println("Cannot find valid solution");
-                // } else {
-                //     System.out.println("Eval: " + aTree.bestSched.score);
-                //     printSched(aTree.bestSched);
-                // }
+                if (aTree.bestSched.score == Integer.MAX_VALUE) {
+                    System.out.println("Cannot find valid solution");
+                } else {
+                    System.out.println("Eval: " + aTree.bestSched.score);
+                    printSched(aTree.bestSched);
+                }
                 
 
             } catch (NumberFormatException e) {
