@@ -123,8 +123,18 @@ public class TreeSearch {
         else {
             bestSched = (bestSched.score > sched.score) ? sched : bestSched;
             path += "Leaf\n";
+            System.out.println("Eval: " + bestSched.score);
+                    printSched(bestSched);
         }
     }  
+
+    public static void printSched (Schedule sched) {
+        if(sched.slotsMap != null){
+            sched.slotsMap.forEach((event, slot) -> {
+                System.out.printf("%-30.30s  %-30.30s%n", event.name, slot.idName);
+            });
+        }
+    }
 
     // return if assign isValid
     private Boolean assign(Schedule sched, Event event, Slot slot) {
