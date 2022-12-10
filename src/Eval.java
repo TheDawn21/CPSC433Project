@@ -418,7 +418,7 @@ public class Eval {
         boolean invalid = false;
         
         String name = e.name.substring(0,11);
-        if (name.equals("CMSA U13T1S") || name.equals("CMSA U12ST1S")) return false;
+        if (name.equals("CMSA U13T1S") || name.equals("CMSA U12T1S")) return false;
 
         if (e.org.equals("CMSA") && e.tier.equals("T1")) {
             if (e.age.equals("U12") || e.age.equals("U13")) {
