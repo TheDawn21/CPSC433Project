@@ -1,19 +1,24 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.Random;
 
 
 public class TreeSearch {
     Parser input;
-    Schedule bestSched;
+    public Schedule bestSched;
     Eval eval;
     Stack<Schedule> stack;
     ArrayList<Slot> gSlots;
+    int numGameSlots;
     ArrayList<Slot> pSlots;
-    String path = "";
+    int numPracSlots;
+    //String path = "";
 
+    Random rng = new Random();
 
-    public TreeSearch(Parser input, int[] commandLineInputs) {
+    public TreeSearch(Parser input, int[] commandLineInputs, Schedule best) {
         this.input = input;
 
         // Initialize eval
@@ -22,7 +27,7 @@ public class TreeSearch {
         this.stack = new Stack<>();
 
         // Initalize best schedule
-        bestSched = new Schedule(null, null, null, null, Integer.MAX_VALUE);
+        bestSched = best;
 
         // Group slot
         gSlots = new ArrayList<>();
@@ -32,6 +37,12 @@ public class TreeSearch {
         pSlots.addAll(input.m_prac_slots);
         pSlots.addAll(input.t_prac_slots);
         pSlots.addAll(input.f_prac_slots);
+
+
+        // Find number of slots
+        numGameSlots = gSlots.size();
+        numPracSlots = pSlots.size();
+
 
         // Initialize root node
         ArrayList<Event> gameLeft = input.games;
@@ -49,6 +60,7 @@ public class TreeSearch {
         specialAssign(sched);
         partAssign(sched);
 
+        
         stack.add(sched);
         while (stack.size() != 0) {
             sched = stack.pop();
@@ -67,7 +79,7 @@ public class TreeSearch {
     }
 
     private void specialAssign(Schedule sched) {
-        path+= "Special Assign\n";
+        //path+= "Special Assign\n";
         Slot specialSlot = null;
         for (Slot s : input.t_prac_slots) {
             if (s.isSpecial)
@@ -89,7 +101,7 @@ public class TreeSearch {
     }
     
     private void partAssign(Schedule sched) {
-        path+= "Part Assign\n";
+       // path+= "Part Assign\n";
         input.paMap.forEach((event, slot) ->  {
             Boolean valid = assign(sched, event, slot);
             if (!valid) {
@@ -99,32 +111,77 @@ public class TreeSearch {
         });
     }
 
+
+    // *** Experimenting with random assignment for events ***
     private void eventsAssign(Schedule sched) {
         if (sched.gamesLeft.size() != 0) {
-            path += "Expanding games\n";
+           // path += "Expanding games\n";
 
             
             Event game = sched.gamesLeft.get(0);
-            for (Slot gSlot : gSlots) {
-                Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, game, gSlot)) 
+            ArrayList<Slot> gameSlotsCopy = new ArrayList<>(gSlots);
+            Collections.shuffle(gameSlotsCopy);
+
+            Schedule schedCopy = new Schedule(sched);
+
+            for (int i = 0; i < numGameSlots; i++) {
+                Slot randomSlot = gameSlotsCopy.get(i);
+                if (assign(schedCopy, game, randomSlot) && (schedCopy.score < bestSched.score)) 
                     stack.add(schedCopy);
             }
+
+            
+            
+
+            /* for (Slot gSlot : gSlots) {
+                Schedule schedCopy = new Schedule(sched);
+                if (assign(schedCopy, game, gSlot) && (schedCopy.score < bestSched.score)) 
+                    stack.add(schedCopy);
+            }*/
+            
         }
         else if (sched.pracsLeft.size() != 0) {
-            path += "Expanding pracs\n";
+           // path += "Expanding pracs\n";
             Event prac = sched.pracsLeft.get(0);
-            for (Slot pSlot : pSlots) {
-                Schedule schedCopy = new Schedule(sched);
-                if (assign(schedCopy, prac, pSlot)) 
+
+            ArrayList<Slot> pracSlotsCopy = new ArrayList<>(pSlots);
+            Collections.shuffle(pracSlotsCopy);
+
+            Schedule schedCopy = new Schedule(sched);
+
+            for (int i = 0; i < numPracSlots; i++) {
+                Slot randomSlot = pracSlotsCopy.get(i);
+                if (assign(schedCopy, prac, randomSlot) && (schedCopy.score < bestSched.score)) 
                     stack.add(schedCopy);
             }
+
+
+            /* for (Slot pSlot : pSlots) {
+                Schedule schedCopy = new Schedule(sched);
+                if (assign(schedCopy, prac, pSlot) && (schedCopy.score < bestSched.score)) 
+                    stack.add(schedCopy);
+            }*/
+            
         }
         else {
-            bestSched = (bestSched.score > sched.score) ? sched : bestSched;
-            path += "Leaf\n";
+            if (bestSched.score > sched.score) {
+                bestSched = sched;
+                System.out.println("Eval: " + bestSched.score);
+                printSched(bestSched);
+            }
+          //  path += "Leaf\n";
         }
     }  
+
+    public static void printSched (Schedule sched) {
+        if(sched.slotsMap != null){
+            sched.slotsMap.forEach((event, slot) -> {
+                System.out.println(event.name + ": " + slot.idName);
+            });
+        }
+
+        System.out.println("Score: " + sched.score);
+    }
 
     // return if assign isValid
     private Boolean assign(Schedule sched, Event event, Slot slot) {
@@ -148,11 +205,11 @@ public class TreeSearch {
             else sched.pracsLeft.remove(event);
             
             // update path
-            path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: true, Score: " + sched.score + "\n";
+           // path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: true, Score: " + sched.score + "\n";
 
             return true;
         }
-        else path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: false\n";
+        //else path += "Event: " + event.id + ", Slot: " + slot.idName + ", IsValid: false\n";
 
         return false;
     }

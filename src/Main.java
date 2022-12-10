@@ -4,7 +4,13 @@ import java.util.HashSet;
 public class Main {
     public static void main(String[] args) throws Exception {
         if (args.length == 9) {
+
+            System.out.println("Original Algo (random)");
+
             try {
+
+                Schedule bestSched = new Schedule(null, null, null, null, Integer.MAX_VALUE);
+
                 String filename = args[0];
                 // soft constraint weights and penalties
                 int[] weights_penalties = new int[8];
@@ -12,15 +18,26 @@ public class Main {
                     weights_penalties[i-1] = Integer.parseInt(args[i]);
                 }
                 Parser parseObj = new Parser(filename);
-                testParserOutput(parseObj);
-                TreeSearch aTree = new TreeSearch(parseObj, weights_penalties);
+               // testParserOutput(parseObj);
 
-                if (aTree.bestSched.score == Integer.MAX_VALUE) {
-                    System.out.println("Cannot find valid solution");
-                } else {
-                    System.out.println("Eval: " + aTree.bestSched.score);
-                    printSched(aTree.bestSched);
+                long msTime = 180000; //4 hour in MS
+                long doUntil = msTime + System.currentTimeMillis(); //1 minute
+                while(System.currentTimeMillis() != doUntil)
+                {
+                    TreeSearch aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
+                
                 }
+
+                
+
+                
+
+                // if (aTree.bestSched.score == Integer.MAX_VALUE) {
+                //     System.out.println("Cannot find valid solution");
+                // } else {
+                //     System.out.println("Eval: " + aTree.bestSched.score);
+                //     printSched(aTree.bestSched);
+                // }
                 
 
             } catch (NumberFormatException e) {
