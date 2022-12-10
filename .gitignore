@@ -7,3 +7,4 @@ CPSC433Project.iml
 .vscode/launch.json
 .vscode/settings.json
 .class
+*.class
