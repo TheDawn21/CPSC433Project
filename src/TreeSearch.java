@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Random;
@@ -47,6 +49,8 @@ public class TreeSearch {
         // Initialize root node
         ArrayList<Event> gameLeft = input.games;
         ArrayList<Event> pracsLeft = input.practices;
+        Collections.shuffle(gameLeft); // randomize output
+        Collections.shuffle(pracsLeft); // randomis output
         HashMap<Slot, ArrayList<Event>> eventsMap = new HashMap<>();
         HashMap<Event, Slot> slotsMap = new HashMap<>();
         int score = 0;
@@ -59,7 +63,7 @@ public class TreeSearch {
     private void startTreeSearch(Schedule sched) {
         specialAssign(sched);
         partAssign(sched);
-
+        ageStuff(sched); // Moves ages to get handled first
         
         stack.add(sched);
         while (stack.size() != 0) {
@@ -76,6 +80,39 @@ public class TreeSearch {
         //     System.out.println("]");
         // }
         //System.out.println(path);
+    }
+
+    private void ageStuff(Schedule sched) {
+        //Handle prefered age restricted first
+
+        /*sched.gamesLeft.sort((s1,s2) -> {
+            if(input.ncMap.get(s2) == null || input.ncMap.get(s1) == null) {
+                return 0;
+            }
+            return input.ncMap.get(s2).size() - input.ncMap.get(s1).size();
+        });*/
+
+        /* 
+        sched.gamesLeft.sort((a, b) -> { 
+            if(input.ncMap.containsKey(a) && input.ncMap.containsKey(b)) {
+                return input.ncMap.get(a).size() - input.ncMap.get(b).size();
+            }
+            return -1;
+        });*/
+        
+        ArrayList<Event> gs = new ArrayList<Event>(sched.gamesLeft);
+        for(Event game : gs) {
+            if (game.age.trim().equals("U15") ||
+                game.age.trim().equals("U16") ||
+                game.age.trim().equals("U17") ||
+                game.age.trim().equals("U19")  ) 
+                    {
+                        //gs.add(game);
+                        sched.gamesLeft.remove(game);
+                        sched.gamesLeft.add(0, game);
+                    }
+            
+        }
     }
 
     private void specialAssign(Schedule sched) {
