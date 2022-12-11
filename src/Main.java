@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Main {
@@ -9,7 +10,7 @@ public class Main {
 
             try {
 
-                Schedule bestSched = new Schedule(null, null, null, null, Integer.MAX_VALUE);
+                Schedule bestSched = new Schedule(new ArrayList<>(), new ArrayList<>(), new HashMap<>(), new HashMap<>(), Integer.MAX_VALUE);
 
                 String filename = args[0];
                 // soft constraint weights and penalties
@@ -22,24 +23,29 @@ public class Main {
 
                 TreeSearch aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
 
-                long msTime = 180000; //4 hour in MS
-                long doUntil = msTime + System.currentTimeMillis(); //1 minute
-                while(System.currentTimeMillis() != doUntil)
+                long start = System.currentTimeMillis(); //4 hour in MS
+                long end = start + 300 * 1000; //1 minute
+                while(System.currentTimeMillis() < end)
                 {
                     aTree = new TreeSearch(parseObj, weights_penalties, bestSched);
+
+                    if (aTree.bestSched.score < bestSched.score) {
+                        bestSched = new Schedule(aTree.bestSched);
+                    }
                 
                 }
 
+                printSched(aTree.bestSched);
+                System.out.println("Eval: " + aTree.bestSched.score);
+                
                 
 
-                
-
-                if (aTree.bestSched.score == Integer.MAX_VALUE) {
-                    System.out.println("Cannot find valid solution");
-                } else {
-                    System.out.println("Eval: " + aTree.bestSched.score);
-                    printSched(aTree.bestSched);
-                }
+                // if (aTree.bestSched.score == Integer.MAX_VALUE) {
+                //     System.out.println("Cannot find valid solution");
+                // } else {
+                //     System.out.println("Eval: " + aTree.bestSched.score);
+                //     printSched(aTree.bestSched);
+                // }
                 
 
             } catch (NumberFormatException e) {
