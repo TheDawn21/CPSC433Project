@@ -20,7 +20,7 @@ public class TreeSearch {
 
     Random rng = new Random();
 
-    public TreeSearch(Parser input, int[] commandLineInputs, Schedule best) {
+    public TreeSearch(Parser input, int[] commandLineInputs, Schedule sched) {
         this.input = input;
 
         // Initialize eval
@@ -29,7 +29,7 @@ public class TreeSearch {
         this.stack = new Stack<>();
 
         // Initalize best schedule
-        bestSched = best;
+        bestSched = new Schedule(sched);
 
         // Group slot
         gSlots = new ArrayList<>();
